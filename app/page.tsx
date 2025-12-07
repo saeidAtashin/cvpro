@@ -11,19 +11,20 @@ export default function Home() {
     <div className="min-h-screen bg-white">
       <Header />
 
-      <main className="max-w-md md:max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-6 md:py-12">
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-6 md:mb-8">
+      <main className="max-w-md md:max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-6 md:py-12 relative">
+        {/* Title - Fixed Left on Larger Mobile */}
+        <h2 className="text-2xl sm:text-left sm:pl-0 md:text-3xl lg:text-4xl font-bold text-black mb-6 md:mb-8 text-center sm:text-left">
           Recent Drops
         </h2>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
           {items.map((item) => (
             <div
               key={item.id}
               className="flex flex-col group cursor-pointer transition-transform hover:scale-105"
             >
-              {/* Placeholder Image */}
-              <div className="w-full aspect-square bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg md:rounded-xl mb-3 md:mb-4 overflow-hidden">
+              {/* Placeholder Image - Portrait Orientation (taller, narrower) */}
+              <div className="w-full aspect-[2/3] bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg md:rounded-xl mb-3 md:mb-4 overflow-hidden">
                 <div className="w-full h-full bg-gray-200 group-hover:bg-gray-300 transition-colors"></div>
               </div>
 
