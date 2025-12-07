@@ -19,11 +19,11 @@ export default function Header() {
     <>
       <header className="sticky top-0 z-40 w-full bg-white border-b border-gray-200 shadow-sm">
         {/* Mobile Header */}
-        <div className="flex items-center justify-between px-4 py-3 md:hidden max-w-md mx-auto">
-          {/* Hamburger Menu Icon */}
+        <div className="flex items-center justify-center py-3 md:hidden relative">
+          {/* Hamburger Menu Icon - Fixed Left */}
           <button
             onClick={() => setIsMenuOpen(true)}
-            className="p-2 -ml-2 text-black"
+            className="absolute left-4 p-2 text-black"
             aria-label="Open menu"
           >
             <svg
@@ -41,16 +41,16 @@ export default function Header() {
             </svg>
           </button>
 
-          {/* Logo and Slogan */}
+          {/* Logo and Slogan - Centered */}
           <div className="flex flex-col items-center">
             <h1 className="text-xl font-bold text-black">Logo</h1>
             <p className="text-xs text-gray-500">slogan</p>
           </div>
 
-          {/* User Icon */}
+          {/* User Icon - Fixed Right */}
           <Link
             href="/login"
-            className="p-2 -mr-2 text-black"
+            className="absolute right-4 p-2 text-black"
             aria-label="Sign in"
           >
             <svg
@@ -70,7 +70,7 @@ export default function Header() {
         </div>
 
         {/* Desktop Header */}
-        <div className="hidden md:flex items-center justify-between px-6 lg:px-8 py-4 max-w-7xl mx-auto">
+        <div className="hidden md:flex items-center justify-between px-6 lg:px-8 py-4 max-w-7xl mx-auto relative">
           {/* Logo and Slogan */}
           <Link href="/" className="flex flex-col">
             <h1 className="text-2xl font-bold text-black">Logo</h1>
@@ -78,7 +78,7 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8">
+          <nav className="hidden lg:flex items-center space-x-8 absolute left-1/2 transform -translate-x-1/2">
             {menuItems.map((item) => (
               <Link
                 key={item.label}
@@ -90,8 +90,8 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* Right Side Actions */}
-          <div className="flex items-center gap-4">
+          {/* Right Side Actions - Fixed Right */}
+          <div className="flex items-center gap-4 absolute right-6 lg:right-8">
             {/* Language Selector - Desktop */}
             <div className="hidden lg:flex items-center gap-2">
               <button className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-lg text-black font-medium text-sm hover:bg-gray-200 transition-colors">
