@@ -1,13 +1,29 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { CVData, defaultCVData } from "@/lib/types";
+import { CVData } from "@/lib/types";
 import CVEditorForm from "@/components/cv_editor/CVEditorForm";
 import { downloadPDF, getPDFBlob } from "@/lib/pdf-generator";
 import Header from "../components/Header";
 
 export default function CVEditorPage() {
-  const [cvData, setCvData] = useState<CVData>(defaultCVData);
+  const [cvData, setCvData] = useState<CVData>({
+    personalInfo: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      address: "",
+      city: "",
+      country: "",
+    },
+    education: [],
+    experience: [],
+    skills: [],
+    certifications: [],
+    languages: [],
+    summary: "",
+  });
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -65,7 +81,23 @@ export default function CVEditorPage() {
     if (
       confirm("Are you sure you want to clear all data? This cannot be undone.")
     ) {
-      setCvData(defaultCVData);
+      setCvData({
+        personalInfo: {
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          address: "",
+          city: "",
+          country: "",
+        },
+        education: [],
+        experience: [],
+        skills: [],
+        certifications: [],
+        languages: [],
+        summary: "",
+      });
       localStorage.removeItem("cvData");
       setPreviewUrl(null);
     }
@@ -144,7 +176,7 @@ export default function CVEditorPage() {
                       No Preview Available
                     </p>
                     <p className="text-sm">
-                      Click "Preview PDF" to generate a preview
+                      Click &quot;Preview PDF&quot; to generate a preview
                     </p>
                   </div>
                 </div>

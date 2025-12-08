@@ -1,13 +1,23 @@
 "use client";
 
-import { renderToBlob } from "@react-pdf/renderer";
-import { CVTemplate } from "@/components/cv_structure";
 import { CVData } from "./types";
 
 export async function generatePDF(cvData: CVData): Promise<Blob> {
   try {
-    // Generate PDF using React PDF
-    const blob = await renderToBlob(<CVTemplate data={cvData} />);
+    // Call API route to generate PDF on the server
+    const response = await fetch("/api/generate-pdf", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(cvData),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to generate PDF");
+    }
+
+    const blob = await response.blob();
     return blob;
   } catch (error) {
     console.error("Error generating PDF:", error);
