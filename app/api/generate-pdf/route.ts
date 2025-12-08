@@ -9,15 +9,29 @@ export async function POST(request: NextRequest) {
     const cvData: CVData = await request.json();
 
     // Generate PDF using React PDF on the server
-    // Using React.createElement to avoid JSX issues in API routes
-    const stream = await renderToStream(
-      React.createElement(CVTemplate, { data: cvData })
-    );
+    // Create the component element - Type assertion needed for React PDF v4 compatibility
+    const pdfElement = React.createElement(CVTemplate, { data: cvData });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const stream = await renderToStream(pdfElement as any);
 
     // Convert stream to buffer
-    const chunks: Uint8Array[] = [];
+    const chunks: Buffer[] = [];
     for await (const chunk of stream) {
-      chunks.push(chunk);
+      // Handle both Buffer and string chunks
+      if (Buffer.isBuffer(chunk)) {
+        chunks.push(chunk);
+      } else if (typeof chunk === "string") {
+        chunks.push(Buffer.from(chunk, "utf-8"));
+      } else {
+        // Handle Uint8Array or other buffer-like objects
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const bufferChunk = chunk as any;
+        if (bufferChunk instanceof ArrayBuffer) {
+          chunks.push(Buffer.from(new Uint8Array(bufferChunk)));
+        } else {
+          chunks.push(Buffer.from(bufferChunk));
+        }
+      }
     }
     const buffer = Buffer.concat(chunks);
 
