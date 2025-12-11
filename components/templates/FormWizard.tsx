@@ -27,7 +27,7 @@ export default function FormWizard({
   const [completedInputs, setCompletedInputs] = useState(0);
   const [showPreview, setShowPreview] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [lastPreviewCount, setLastPreviewCount] = useState(0);
+  const [isInputFocused, setIsInputFocused] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -76,16 +76,8 @@ export default function FormWizard({
       if (skill.name) count++;
     });
     
-    const previousCount = completedInputs;
     setCompletedInputs(count);
-    
-    // Show preview after every 2 completed inputs (only if count increased)
-    if (count > 0 && count % 2 === 0 && count > lastPreviewCount && count !== previousCount) {
-      setLastPreviewCount(count);
-      setShowPreview(true);
-      setTimeout(() => setShowPreview(false), 3000);
-    }
-  }, [data, completedInputs, lastPreviewCount]);
+  }, [data]);
 
   const updatePersonalInfo = (field: keyof PersonalInfo, value: string) => {
     onChange({
@@ -190,104 +182,177 @@ export default function FormWizard({
     });
   };
 
-  const steps: Step[] = [
+  // Create all field components - grouped by 3
+  const allFields: Array<{
+    id: string;
+    title: string;
+    component: React.ReactNode;
+  }> = [
     {
-      id: "personal",
-      title: "اطلاعات شخصی",
-      fields: ["firstName", "lastName", "email", "phone", "address", "city", "country"],
+      id: "firstName",
+      title: "نام",
       component: (
-        <div className="space-y-4">
-          <h2 className="text-xl font-bold mb-4">اطلاعات شخصی</h2>
-          <div className="space-y-3">
-            <div>
-              <label className="block text-sm font-medium mb-1">نام</label>
-              <input
-                type="text"
-                value={data.personalInfo.firstName}
-                onChange={(e) => updatePersonalInfo("firstName", e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">نام خانوادگی</label>
-              <input
-                type="text"
-                value={data.personalInfo.lastName}
-                onChange={(e) => updatePersonalInfo("lastName", e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">ایمیل</label>
-              <input
-                type="email"
-                value={data.personalInfo.email}
-                onChange={(e) => updatePersonalInfo("email", e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">تلفن</label>
-              <input
-                type="tel"
-                value={data.personalInfo.phone}
-                onChange={(e) => updatePersonalInfo("phone", e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">آدرس</label>
-              <input
-                type="text"
-                value={data.personalInfo.address}
-                onChange={(e) => updatePersonalInfo("address", e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">شهر</label>
-              <input
-                type="text"
-                value={data.personalInfo.city}
-                onChange={(e) => updatePersonalInfo("city", e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">کشور</label>
-              <input
-                type="text"
-                value={data.personalInfo.country}
-                onChange={(e) => updatePersonalInfo("country", e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
-              />
-            </div>
-          </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">نام</label>
+          <input
+            type="text"
+            value={data.personalInfo.firstName}
+            onChange={(e) => updatePersonalInfo("firstName", e.target.value)}
+            onFocus={() => setIsInputFocused(true)}
+            onBlur={() => setIsInputFocused(false)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+          />
+        </div>
+      ),
+    },
+    {
+      id: "lastName",
+      title: "نام خانوادگی",
+      component: (
+        <div>
+          <label className="block text-sm font-medium mb-1">نام خانوادگی</label>
+          <input
+            type="text"
+            value={data.personalInfo.lastName}
+            onChange={(e) => updatePersonalInfo("lastName", e.target.value)}
+            onFocus={() => setIsInputFocused(true)}
+            onBlur={() => setIsInputFocused(false)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+          />
+        </div>
+      ),
+    },
+    {
+      id: "email",
+      title: "ایمیل",
+      component: (
+        <div>
+          <label className="block text-sm font-medium mb-1">ایمیل</label>
+          <input
+            type="email"
+            value={data.personalInfo.email}
+            onChange={(e) => updatePersonalInfo("email", e.target.value)}
+            onFocus={() => setIsInputFocused(true)}
+            onBlur={() => setIsInputFocused(false)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+          />
+        </div>
+      ),
+    },
+    {
+      id: "phone",
+      title: "تلفن",
+      component: (
+        <div>
+          <label className="block text-sm font-medium mb-1">تلفن</label>
+          <input
+            type="tel"
+            value={data.personalInfo.phone}
+            onChange={(e) => updatePersonalInfo("phone", e.target.value)}
+            onFocus={() => setIsInputFocused(true)}
+            onBlur={() => setIsInputFocused(false)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+          />
+        </div>
+      ),
+    },
+    {
+      id: "address",
+      title: "آدرس",
+      component: (
+        <div>
+          <label className="block text-sm font-medium mb-1">آدرس</label>
+          <input
+            type="text"
+            value={data.personalInfo.address}
+            onChange={(e) => updatePersonalInfo("address", e.target.value)}
+            onFocus={() => setIsInputFocused(true)}
+            onBlur={() => setIsInputFocused(false)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+          />
+        </div>
+      ),
+    },
+    {
+      id: "city",
+      title: "شهر",
+      component: (
+        <div>
+          <label className="block text-sm font-medium mb-1">شهر</label>
+          <input
+            type="text"
+            value={data.personalInfo.city}
+            onChange={(e) => updatePersonalInfo("city", e.target.value)}
+            onFocus={() => setIsInputFocused(true)}
+            onBlur={() => setIsInputFocused(false)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+          />
+        </div>
+      ),
+    },
+    {
+      id: "country",
+      title: "کشور",
+      component: (
+        <div>
+          <label className="block text-sm font-medium mb-1">کشور</label>
+          <input
+            type="text"
+            value={data.personalInfo.country}
+            onChange={(e) => updatePersonalInfo("country", e.target.value)}
+            onFocus={() => setIsInputFocused(true)}
+            onBlur={() => setIsInputFocused(false)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+          />
         </div>
       ),
     },
     {
       id: "summary",
       title: "خلاصه حرفه‌ای",
-      fields: ["summary"],
       component: (
-        <div className="space-y-4">
-          <h2 className="text-xl font-bold mb-4">خلاصه حرفه‌ای</h2>
+        <div>
+          <label className="block text-sm font-medium mb-1">خلاصه حرفه‌ای</label>
           <textarea
             value={data.summary}
             onChange={(e) => updateSummary(e.target.value)}
-            rows={6}
+            onFocus={() => setIsInputFocused(true)}
+            onBlur={() => setIsInputFocused(false)}
+            rows={4}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
             placeholder="خلاصه حرفه‌ای خود را بنویسید..."
           />
         </div>
       ),
     },
-    {
-      id: "education",
-      title: "تحصیلات",
-      fields: ["education"],
+  ];
+
+  // Group fields into steps of 3
+  const steps: Step[] = [];
+  for (let i = 0; i < allFields.length; i += 3) {
+    const fieldsGroup = allFields.slice(i, i + 3);
+    steps.push({
+      id: `step-${i / 3 + 1}`,
+      title: `مرحله ${i / 3 + 1}`,
+      fields: fieldsGroup.map((f) => f.id),
       component: (
+        <div className="space-y-4">
+          <div className="space-y-3">
+            {fieldsGroup.map((field) => (
+              <div key={field.id}>{field.component}</div>
+            ))}
+          </div>
+        </div>
+      ),
+    });
+  }
+
+  // Add education, experience, and skills as separate steps
+  steps.push({
+    id: "education",
+    title: "تحصیلات",
+    fields: ["education"],
+    component: (
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-bold">تحصیلات</h2>
@@ -316,6 +381,8 @@ export default function FormWizard({
                     type="text"
                     value={edu.degree}
                     onChange={(e) => updateEducation(edu.id, "degree", e.target.value)}
+                    onFocus={() => setIsInputFocused(true)}
+                    onBlur={() => setIsInputFocused(false)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
                   />
                 </div>
@@ -325,6 +392,8 @@ export default function FormWizard({
                     type="text"
                     value={edu.institution}
                     onChange={(e) => updateEducation(edu.id, "institution", e.target.value)}
+                    onFocus={() => setIsInputFocused(true)}
+                    onBlur={() => setIsInputFocused(false)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
                   />
                 </div>
@@ -335,6 +404,8 @@ export default function FormWizard({
                       type="text"
                       value={edu.startDate}
                       onChange={(e) => updateEducation(edu.id, "startDate", e.target.value)}
+                      onFocus={() => setIsInputFocused(true)}
+                      onBlur={() => setIsInputFocused(false)}
                       placeholder="مثال: 2018"
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
                     />
@@ -345,6 +416,8 @@ export default function FormWizard({
                       type="text"
                       value={edu.endDate}
                       onChange={(e) => updateEducation(edu.id, "endDate", e.target.value)}
+                      onFocus={() => setIsInputFocused(true)}
+                      onBlur={() => setIsInputFocused(false)}
                       placeholder="مثال: 2022"
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
                     />
@@ -355,12 +428,13 @@ export default function FormWizard({
           ))}
         </div>
       ),
-    },
-    {
-      id: "experience",
-      title: "تجربه کاری",
-      fields: ["experience"],
-      component: (
+    });
+
+  steps.push({
+    id: "experience",
+    title: "تجربه کاری",
+    fields: ["experience"],
+    component: (
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-bold">تجربه کاری</h2>
@@ -389,6 +463,8 @@ export default function FormWizard({
                     type="text"
                     value={exp.title}
                     onChange={(e) => updateExperience(exp.id, "title", e.target.value)}
+                    onFocus={() => setIsInputFocused(true)}
+                    onBlur={() => setIsInputFocused(false)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
                   />
                 </div>
@@ -398,6 +474,8 @@ export default function FormWizard({
                     type="text"
                     value={exp.company}
                     onChange={(e) => updateExperience(exp.id, "company", e.target.value)}
+                    onFocus={() => setIsInputFocused(true)}
+                    onBlur={() => setIsInputFocused(false)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
                   />
                 </div>
@@ -408,6 +486,8 @@ export default function FormWizard({
                       type="text"
                       value={exp.startDate}
                       onChange={(e) => updateExperience(exp.id, "startDate", e.target.value)}
+                      onFocus={() => setIsInputFocused(true)}
+                      onBlur={() => setIsInputFocused(false)}
                       placeholder="مثال: Jan 2020"
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
                     />
@@ -418,6 +498,8 @@ export default function FormWizard({
                       type="text"
                       value={exp.endDate}
                       onChange={(e) => updateExperience(exp.id, "endDate", e.target.value)}
+                      onFocus={() => setIsInputFocused(true)}
+                      onBlur={() => setIsInputFocused(false)}
                       placeholder="مثال: Present"
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
                     />
@@ -428,6 +510,8 @@ export default function FormWizard({
                   <textarea
                     value={exp.description}
                     onChange={(e) => updateExperience(exp.id, "description", e.target.value)}
+                    onFocus={() => setIsInputFocused(true)}
+                    onBlur={() => setIsInputFocused(false)}
                     rows={3}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
                   />
@@ -437,12 +521,13 @@ export default function FormWizard({
           ))}
         </div>
       ),
-    },
-    {
-      id: "skills",
-      title: "مهارت‌ها",
-      fields: ["skills"],
-      component: (
+    });
+
+  steps.push({
+    id: "skills",
+    title: "مهارت‌ها",
+    fields: ["skills"],
+    component: (
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-bold">مهارت‌ها</h2>
@@ -461,6 +546,8 @@ export default function FormWizard({
                   type="text"
                   value={skill.name}
                   onChange={(e) => updateSkill(skill.id, "name", e.target.value)}
+                  onFocus={() => setIsInputFocused(true)}
+                  onBlur={() => setIsInputFocused(false)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
                 />
               </div>
@@ -469,6 +556,8 @@ export default function FormWizard({
                 <select
                   value={skill.level}
                   onChange={(e) => updateSkill(skill.id, "level", e.target.value)}
+                  onFocus={() => setIsInputFocused(true)}
+                  onBlur={() => setIsInputFocused(false)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
                 >
                   <option value="beginner">مبتدی</option>
@@ -487,8 +576,7 @@ export default function FormWizard({
           ))}
         </div>
       ),
-    },
-  ];
+    });
 
   return (
     <>
@@ -525,7 +613,20 @@ export default function FormWizard({
           قبلی
         </button>
         <button
-          onClick={() => setCurrentStep(Math.min(steps.length - 1, currentStep + 1))}
+          onClick={() => {
+            if (currentStep < steps.length - 1) {
+              // Show preview before moving to next step
+              if (isMobile) {
+                setShowPreview(true);
+                setTimeout(() => {
+                  setShowPreview(false);
+                  setCurrentStep(currentStep + 1);
+                }, 3000);
+              } else {
+                setCurrentStep(currentStep + 1);
+              }
+            }
+          }}
           disabled={currentStep === steps.length - 1}
           className="px-6 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >

@@ -15,41 +15,54 @@ export default function MobilePreviewModal({
   isOpen,
   onClose,
 }: MobilePreviewModalProps) {
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
-      setIsAnimating(true);
+      setIsMounted(true);
+      // Small delay to trigger animation
+      setTimeout(() => setIsVisible(true), 10);
+    } else {
+      setIsVisible(false);
+      // Wait for animation to complete before unmounting
+      setTimeout(() => setIsMounted(false), 300);
     }
   }, [isOpen]);
 
-  if (!isOpen) return null;
+  if (!isMounted) return null;
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300 ${
-        isOpen ? "opacity-100" : "opacity-0"
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black transition-all duration-300 ease-out ${
+        isVisible ? "bg-opacity-80 opacity-100" : "bg-opacity-0 opacity-0"
       }`}
       onClick={onClose}
     >
       <div
-        className={`relative bg-white rounded-lg shadow-2xl max-w-[90vw] max-h-[90vh] overflow-auto transform transition-all duration-500 ${
-          isAnimating
+        className={`relative bg-white w-full h-full overflow-auto transform transition-all duration-500 ease-out ${
+          isVisible
             ? "scale-100 translate-y-0 opacity-100"
-            : "scale-95 translate-y-4 opacity-0"
+            : "scale-95 translate-y-8 opacity-0"
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 z-10 bg-gray-800 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-gray-700 transition-colors"
-        >
-          ×
-        </button>
-        <div className="p-4">
-          <h3 className="text-lg font-bold mb-4 text-center">پیش‌نمایش رزومه</h3>
-          <div className="flex justify-center">
-            <div className="scale-[0.35] origin-top">
+        {/* Header */}
+        <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between shadow-sm">
+          <h3 className="text-lg font-bold text-gray-900">پیش‌نمایش رزومه</h3>
+          <button
+            onClick={onClose}
+            className="bg-gray-800 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-gray-700 active:scale-95 transition-all duration-200 text-xl font-bold"
+            aria-label="بستن"
+          >
+            ×
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="p-4 pb-8">
+          <div className="flex justify-center items-start min-h-[calc(100vh-80px)]">
+            <div className="scale-[0.5] origin-top">
               <Template02 data={data} />
             </div>
           </div>
