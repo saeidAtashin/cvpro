@@ -1,5 +1,14 @@
-import { Document, Page, View, Text, Image, StyleSheet, pdf } from '@react-pdf/renderer';
-import { ResumeElement } from '@/lib/types/ResumeElement';
+import React from "react";
+import {
+  Document,
+  Page,
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  pdf,
+} from "@react-pdf/renderer";
+import { ResumeElement } from "@/lib/types/ResumeElement";
 
 const A4_WIDTH = 210; // mm
 const A4_HEIGHT = 297; // mm
@@ -15,21 +24,21 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   element: {
-    position: 'absolute',
+    position: "absolute",
   },
   heading: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   text: {
     fontSize: 14,
   },
   divider: {
     height: 2,
-    backgroundColor: '#000000',
+    backgroundColor: "#000000",
   },
   image: {
-    objectFit: 'cover',
+    objectFit: "cover",
   },
 });
 
@@ -43,11 +52,13 @@ export const generatePdf = async (elements: ResumeElement[]): Promise<Blob> => {
             top: `${pxToMm(element.y)}mm`,
             width: `${pxToMm(element.width)}mm`,
             height: `${pxToMm(element.height)}mm`,
-            ...(element.rotation && { transform: `rotate(${element.rotation}deg)` }),
+            ...(element.rotation && {
+              transform: `rotate(${element.rotation}deg)`,
+            }),
           };
 
           switch (element.type) {
-            case 'heading':
+            case "heading":
               return (
                 <View key={element.id} style={[styles.element, elementStyle]}>
                   <Text
@@ -55,20 +66,22 @@ export const generatePdf = async (elements: ResumeElement[]): Promise<Blob> => {
                       styles.heading,
                       {
                         fontSize: element.fontSize || 24,
-                        fontFamily: element.fontFamily || 'Helvetica',
-                        color: element.color || '#000000',
-                        fontWeight: element.fontWeight === 'bold' ? 'bold' : 'normal',
-                        fontStyle: element.fontStyle === 'italic' ? 'italic' : 'normal',
+                        fontFamily: element.fontFamily || "Helvetica",
+                        color: element.color || "#000000",
+                        fontWeight:
+                          element.fontWeight === "bold" ? "bold" : "normal",
+                        fontStyle:
+                          element.fontStyle === "italic" ? "italic" : "normal",
                         lineHeight: element.lineHeight || 1.5,
                       },
                     ]}
                   >
-                    {element.text || 'Heading'}
+                    {element.text || "Heading"}
                   </Text>
                 </View>
               );
 
-            case 'text':
+            case "text":
               return (
                 <View key={element.id} style={[styles.element, elementStyle]}>
                   <Text
@@ -76,20 +89,22 @@ export const generatePdf = async (elements: ResumeElement[]): Promise<Blob> => {
                       styles.text,
                       {
                         fontSize: element.fontSize || 14,
-                        fontFamily: element.fontFamily || 'Helvetica',
-                        color: element.color || '#000000',
-                        fontWeight: element.fontWeight === 'bold' ? 'bold' : 'normal',
-                        fontStyle: element.fontStyle === 'italic' ? 'italic' : 'normal',
+                        fontFamily: element.fontFamily || "Helvetica",
+                        color: element.color || "#000000",
+                        fontWeight:
+                          element.fontWeight === "bold" ? "bold" : "normal",
+                        fontStyle:
+                          element.fontStyle === "italic" ? "italic" : "normal",
                         lineHeight: element.lineHeight || 1.5,
                       },
                     ]}
                   >
-                    {element.text || 'Text'}
+                    {element.text || "Text"}
                   </Text>
                 </View>
               );
 
-            case 'image':
+            case "image":
               return element.src ? (
                 <Image
                   key={element.id}
@@ -99,14 +114,15 @@ export const generatePdf = async (elements: ResumeElement[]): Promise<Blob> => {
                     styles.image,
                     elementStyle,
                     {
-                      opacity: element.opacity !== undefined ? element.opacity : 1,
+                      opacity:
+                        element.opacity !== undefined ? element.opacity : 1,
                       borderRadius: element.borderRadius || 0,
                     },
                   ]}
                 />
               ) : null;
 
-            case 'divider':
+            case "divider":
               return (
                 <View
                   key={element.id}
@@ -115,8 +131,9 @@ export const generatePdf = async (elements: ResumeElement[]): Promise<Blob> => {
                     styles.divider,
                     elementStyle,
                     {
-                      backgroundColor: element.color || '#000000',
-                      opacity: element.opacity !== undefined ? element.opacity : 1,
+                      backgroundColor: element.color || "#000000",
+                      opacity:
+                        element.opacity !== undefined ? element.opacity : 1,
                     },
                   ]}
                 />
@@ -133,4 +150,3 @@ export const generatePdf = async (elements: ResumeElement[]): Promise<Blob> => {
   const blob = await pdf(pdfDoc).toBlob();
   return blob;
 };
-
