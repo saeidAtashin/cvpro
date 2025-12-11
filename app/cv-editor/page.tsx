@@ -5,6 +5,7 @@ import { CVData } from "@/lib/types";
 import CVEditorForm from "@/components/cv_editor/CVEditorForm";
 import { downloadPDF, getPDFBlob } from "@/lib/pdf-generator";
 import Header from "../components/Header";
+import PDFViewer from "@/components/PDFViewer";
 
 export default function CVEditorPage() {
   const [cvData, setCvData] = useState<CVData>({
@@ -147,39 +148,22 @@ export default function CVEditorPage() {
           {/* Preview */}
           <div className="lg:sticky lg:top-6 lg:h-[calc(100vh-6rem)]">
             <div className="bg-white rounded-lg border border-gray-200 p-4 h-full">
-              <h2 className="text-xl font-bold mb-4">PDF Preview</h2>
-              {previewUrl ? (
-                <div className="h-[calc(100%-3rem)] border border-gray-300 rounded-md overflow-hidden">
-                  <iframe
-                    src={previewUrl}
-                    className="w-full h-full"
-                    title="CV Preview"
-                  />
-                </div>
-              ) : (
-                <div className="h-[calc(100%-3rem)] flex items-center justify-center border-2 border-dashed border-gray-300 rounded-md bg-gray-50">
-                  <div className="text-center text-gray-500">
-                    <svg
-                      className="mx-auto h-12 w-12 text-gray-400 mb-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                      />
-                    </svg>
-                    <p className="text-lg font-medium mb-2">
-                      No Preview Available
-                    </p>
-                    <p className="text-sm">
-                      Click &quot;Preview PDF&quot; to generate a preview
-                    </p>
-                  </div>
-                </div>
+              <h2 className="text-xl text-black font-bold mb-4">
+                {previewUrl ? "Generated PDF Preview" : "CV Template Preview"}
+              </h2>
+              <div className="h-[calc(100%-3rem)] border border-gray-300 rounded-md overflow-hidden bg-gray-100">
+                <PDFViewer
+                  url={previewUrl || "/CV_template01.pdf"}
+                  title={
+                    previewUrl ? "Generated CV Preview" : "CV Template Preview"
+                  }
+                />
+              </div>
+              {!previewUrl && (
+                <p className="text-xs text-gray-500 mt-2 text-center">
+                  This is the template. Click &quot;Preview PDF&quot; to see
+                  your customized CV
+                </p>
               )}
             </div>
           </div>
