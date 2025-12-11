@@ -667,7 +667,7 @@ export default function FormWizard({
       </div>
 
       {/* Current Step Content */}
-      <div className="bg-white p-6 rounded-lg border border-gray-200 min-h-[400px]">
+      <div className="bg-white p-6 rounded-lg border border-gray-200">
         {steps[currentStep].component}
       </div>
 
