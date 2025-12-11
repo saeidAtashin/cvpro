@@ -6,15 +6,20 @@ import React from "react";
 
 export async function POST(request: NextRequest) {
   try {
+    console.log("PDF generation API called");
     const cvData: CVData = await request.json();
+    console.log("Received CV data:", JSON.stringify(cvData).substring(0, 200) + "...");
 
     // Generate PDF using React PDF on the server
     // Create the component element - Type assertion needed for React PDF v4 compatibility
+    console.log("Creating PDF element...");
     const pdfElement = React.createElement(CVTemplate, { data: cvData });
+    console.log("Rendering to stream...");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const stream = await renderToStream(pdfElement as any);
 
     // Convert stream to buffer
+    console.log("Converting stream to buffer...");
     const chunks: Buffer[] = [];
     for await (const chunk of stream) {
       // Handle both Buffer and string chunks
@@ -34,6 +39,7 @@ export async function POST(request: NextRequest) {
       }
     }
     const buffer = Buffer.concat(chunks);
+    console.log("PDF generated successfully, size:", buffer.length, "bytes");
 
     // Return PDF buffer
     return new NextResponse(buffer, {
@@ -45,6 +51,14 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("Error generating PDF:", error);
+    const errorDetails =
+      error instanceof Error
+        ? {
+            message: error.message,
+            stack: error.stack,
+          }
+        : { message: "Unknown error", error };
+    console.error("Full error details:", JSON.stringify(errorDetails, null, 2));
     return NextResponse.json(
       {
         error: "Failed to generate PDF",

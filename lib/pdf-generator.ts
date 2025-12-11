@@ -4,6 +4,7 @@ import { CVData } from "./types";
 
 export async function generatePDF(cvData: CVData): Promise<Blob> {
   try {
+    console.log("Calling PDF generation API with data:", cvData);
     // Call API route to generate PDF on the server
     const response = await fetch("/api/generate-pdf", {
       method: "POST",
@@ -13,11 +14,29 @@ export async function generatePDF(cvData: CVData): Promise<Blob> {
       body: JSON.stringify(cvData),
     });
 
+    console.log("API response status:", response.status, response.statusText);
+
     if (!response.ok) {
-      throw new Error("Failed to generate PDF");
+      // Try to get error message from response
+      let errorMessage = `Failed to generate PDF: ${response.status} ${response.statusText}`;
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.error || errorData.details || errorMessage;
+      } catch {
+        // If response is not JSON, use status text
+        const text = await response.text();
+        if (text) {
+          errorMessage += ` - ${text}`;
+        }
+      }
+      throw new Error(errorMessage);
     }
 
     const blob = await response.blob();
+    console.log("PDF blob received, size:", blob.size, "type:", blob.type);
+    if (blob.size === 0) {
+      throw new Error("Received empty PDF blob from server");
+    }
     return blob;
   } catch (error) {
     console.error("Error generating PDF:", error);
