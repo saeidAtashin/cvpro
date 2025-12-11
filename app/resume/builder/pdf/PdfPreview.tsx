@@ -3,14 +3,6 @@
 import React from 'react';
 import { useResumeStore } from '@/lib/state/useResumeStore';
 
-const styles = StyleSheet.create({
-  preview: {
-    width: '100%',
-    height: '100%',
-    border: '1px solid #ccc',
-  },
-});
-
 export const PdfPreview: React.FC = () => {
   const elements = useResumeStore((state) => state.elements);
 

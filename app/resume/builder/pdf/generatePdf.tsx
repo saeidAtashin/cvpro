@@ -106,6 +106,7 @@ export const generatePdf = async (elements: ResumeElement[]): Promise<Blob> => {
 
             case "image":
               return element.src ? (
+                // eslint-disable-next-line jsx-a11y/alt-text
                 <Image
                   key={element.id}
                   src={element.src}
