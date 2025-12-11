@@ -3,8 +3,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { CVData } from "@/lib/types";
 import CVEditorForm from "@/components/cv_editor/CVEditorForm";
+import FormWizard from "@/components/templates/FormWizard";
 import Header from "../components/Header";
 import Template02 from "@/components/templates/Template02";
+import MobilePreviewModal from "@/components/templates/MobilePreviewModal";
 
 export default function Template02EditorPage() {
   const [cvData, setCvData] = useState<CVData>({
@@ -25,6 +27,27 @@ export default function Template02EditorPage() {
     summary: "",
   });
   const templateRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [showInitialPreview, setShowInitialPreview] = useState(false);
+  const [hasShownInitialPreview, setHasShownInitialPreview] = useState(false);
+
+  // Check if mobile and show initial preview
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (mobile && !hasShownInitialPreview) {
+        // Show initial preview modal after a short delay (only once)
+        setTimeout(() => {
+          setShowInitialPreview(true);
+          setHasShownInitialPreview(true);
+        }, 500);
+      }
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, [hasShownInitialPreview]);
 
   // Load saved data from localStorage on mount
   useEffect(() => {
@@ -59,7 +82,7 @@ export default function Template02EditorPage() {
       try {
         const html2canvasModule = await import("html2canvas");
         html2canvasFn = html2canvasModule.default;
-      } catch (importError) {
+      } catch {
         alert(
           "برای دانلود PNG، لطفا پکیج html2canvas را نصب کنید:\nnpm install html2canvas"
         );
@@ -91,7 +114,9 @@ export default function Template02EditorPage() {
       }, "image/png");
     } catch (error) {
       console.error("Error generating PNG:", error);
-      alert("خطا در تولید PNG. لطفا html2canvas را نصب کنید: npm install html2canvas");
+      alert(
+        "خطا در تولید PNG. لطفا html2canvas را نصب کنید: npm install html2canvas"
+      );
     }
   };
 
@@ -109,7 +134,7 @@ export default function Template02EditorPage() {
       try {
         const html2canvasModule = await import("html2canvas");
         html2canvasFn = html2canvasModule.default;
-      } catch (importError) {
+      } catch {
         alert(
           "برای دانلود PDF، لطفا پکیج html2canvas را نصب کنید:\nnpm install html2canvas"
         );
@@ -119,7 +144,7 @@ export default function Template02EditorPage() {
       try {
         const jsPDFModule = await import("jspdf");
         jsPDF = jsPDFModule.jsPDF;
-      } catch (importError) {
+      } catch {
         alert(
           "برای دانلود PDF، لطفا پکیج jspdf را نصب کنید:\nnpm install jspdf"
         );
@@ -170,6 +195,15 @@ export default function Template02EditorPage() {
             </p>
           </div>
           <div className="flex gap-3 flex-wrap items-center">
+            {isMobile && (
+              <button
+                type="button"
+                onClick={() => setShowInitialPreview(true)}
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+              >
+                مشاهده پیش‌نمایش
+              </button>
+            )}
             <button
               type="button"
               onClick={handleDownloadPNG}
@@ -187,27 +221,46 @@ export default function Template02EditorPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Editor Form */}
-          <div className="lg:sticky lg:top-6 lg:h-[calc(100vh-6rem)] lg:overflow-y-auto">
-            <CVEditorForm data={cvData} onChange={handleDataChange} />
+        {isMobile ? (
+          /* Mobile: Wizard Form */
+          <div>
+            <FormWizard
+              data={cvData}
+              onChange={handleDataChange}
+              onShowPreview={() => setShowInitialPreview(true)}
+            />
           </div>
+        ) : (
+          /* Desktop: Side by Side */
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Editor Form */}
+            <div className="lg:sticky lg:top-6 lg:h-[calc(100vh-6rem)] lg:overflow-y-auto">
+              <CVEditorForm data={cvData} onChange={handleDataChange} />
+            </div>
 
-          {/* Preview */}
-          <div className="lg:sticky lg:top-6 lg:h-[calc(100vh-6rem)]">
-            <div className="bg-white rounded-lg border border-gray-200 p-4 h-full">
-              <h2 className="text-xl text-black font-bold mb-4">Preview</h2>
-              <div className="h-[calc(100%-3rem)] border border-gray-300 rounded-md overflow-auto bg-gray-100 flex items-start justify-center p-4">
-                <div ref={templateRef} className="scale-[0.6] origin-top">
-                  <Template02 data={cvData} />
+            {/* Preview */}
+            <div className="lg:sticky lg:top-6 lg:h-[calc(100vh-6rem)]">
+              <div className="bg-white rounded-lg border border-gray-200 p-4 h-full">
+                <h2 className="text-xl text-black font-bold mb-4">Preview</h2>
+                <div className="h-[calc(100%-3rem)] border border-gray-300 rounded-md overflow-auto bg-gray-100 flex items-start justify-center p-4">
+                  <div ref={templateRef} className="scale-[0.6] origin-top">
+                    <Template02 data={cvData} />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
+
+        {/* Initial Preview Modal (Mobile only) */}
+        {isMobile && (
+          <MobilePreviewModal
+            data={cvData}
+            isOpen={showInitialPreview}
+            onClose={() => setShowInitialPreview(false)}
+          />
+        )}
       </main>
     </div>
   );
 }
-
-
