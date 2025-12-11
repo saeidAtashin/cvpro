@@ -196,7 +196,7 @@ export default function CVEditorForm({ data, onChange }: CVEditorFormProps) {
   return (
     <div className="space-y-6">
       {/* Personal Information */}
-      <section className="bg-white p-6 rounded-lg border border-gray-200">
+      <section className="bg-white text-black p-6 rounded-lg border border-gray-200">
         <h2 className="text-xl font-bold mb-4">Personal Information</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -288,7 +288,7 @@ export default function CVEditorForm({ data, onChange }: CVEditorFormProps) {
       </section>
 
       {/* Summary */}
-      <section className="bg-white p-6 rounded-lg border border-gray-200">
+      <section className="bg-white text-black p-6 rounded-lg border border-gray-200">
         <h2 className="text-xl font-bold mb-4">Professional Summary</h2>
         <textarea
           value={data.summary}
@@ -300,7 +300,7 @@ export default function CVEditorForm({ data, onChange }: CVEditorFormProps) {
       </section>
 
       {/* Experience */}
-      <section className="bg-white p-6 rounded-lg border border-gray-200">
+      <section className="bg-white text-black p-6 rounded-lg border border-gray-200">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Professional Experience</h2>
           <button
@@ -445,7 +445,7 @@ export default function CVEditorForm({ data, onChange }: CVEditorFormProps) {
       </section>
 
       {/* Education */}
-      <section className="bg-white p-6 rounded-lg border border-gray-200">
+      <section className="bg-white text-black p-6 rounded-lg border border-gray-200">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Education</h2>
           <button
@@ -556,7 +556,7 @@ export default function CVEditorForm({ data, onChange }: CVEditorFormProps) {
       </section>
 
       {/* Skills */}
-      <section className="bg-white p-6 rounded-lg border border-gray-200">
+      <section className="bg-white text-black p-6 rounded-lg border border-gray-200">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Skills</h2>
           <button
@@ -603,7 +603,7 @@ export default function CVEditorForm({ data, onChange }: CVEditorFormProps) {
       </section>
 
       {/* Languages */}
-      <section className="bg-white p-6 rounded-lg border border-gray-200">
+      <section className="bg-white text-black p-6 rounded-lg border border-gray-200">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Languages</h2>
           <button
@@ -652,7 +652,7 @@ export default function CVEditorForm({ data, onChange }: CVEditorFormProps) {
       </section>
 
       {/* Certifications */}
-      <section className="bg-white p-6 rounded-lg border border-gray-200">
+      <section className="bg-white text-black p-6 rounded-lg border border-gray-200">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Certifications</h2>
           <button

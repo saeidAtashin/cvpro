@@ -85,12 +85,14 @@ export default function Template02({ data }: Template02Props) {
                   </div>
                   <div className="self-stretch inline-flex justify-start items-center gap-1">
                     <div className="flex-1 justify-start text-neutral-500 text-[8px] font-normal font-[var(--font-poppins)]">
-                      {exp.company || "Company name"} / {exp.location || "Address"}
+                      {exp.company || "Company name"} /{" "}
+                      {exp.location || "Address"}
                     </div>
                   </div>
                 </div>
                 <div className="self-stretch justify-start text-zinc-600 text-[8px] font-normal font-[var(--font-poppins)]">
-                  {exp.description || "Lorem ipsum dolor sit amet consectetur..."}
+                  {exp.description ||
+                    "Lorem ipsum dolor sit amet consectetur..."}
                 </div>
               </div>
             ))}
@@ -151,7 +153,8 @@ export default function Template02({ data }: Template02Props) {
               </div>
             </div>
             <div className="self-stretch justify-start text-zinc-600 text-[8px] font-normal font-[var(--font-poppins)]">
-              {data.languages[0]?.level || "Lorem ipsum dolor sit amet consectetur..."}
+              {data.languages[0]?.level ||
+                "Lorem ipsum dolor sit amet consectetur..."}
             </div>
           </div>
         </div>
@@ -234,7 +237,8 @@ export default function Template02({ data }: Template02Props) {
         <div className="w-5 h-0 outline outline-1 outline-offset-[-0.50px] outline-neutral-500" />
         <div className="px-7 flex justify-center items-center gap-2">
           <div className="justify-start text-neutral-500 text-base font-light font-[var(--font-poppins)] uppercase tracking-[7.68px]">
-            Curriculum<br />
+            Curriculum
+            <br />
             vitae
           </div>
         </div>
@@ -394,4 +398,3 @@ export default function Template02({ data }: Template02Props) {
     </div>
   );
 }
-

@@ -23,7 +23,7 @@ export default function Home() {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
           {/* First Item - CV Template Preview */}
           <Link
-            href="/cv-editor"
+            href="/template02-editor"
             className="flex flex-col group cursor-pointer transition-transform hover:scale-105"
           >
             {/* PDF Preview - Portrait Orientation */}
