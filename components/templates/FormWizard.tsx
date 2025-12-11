@@ -1,7 +1,13 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { CVData, PersonalInfo, Education, Experience, Skill } from "@/lib/types";
+import {
+  CVData,
+  PersonalInfo,
+  Education,
+  Experience,
+  Skill,
+} from "@/lib/types";
 import Template02 from "./Template02";
 import MobilePreviewModal from "./MobilePreviewModal";
 
@@ -41,7 +47,7 @@ export default function FormWizard({
   // Count completed inputs
   useEffect(() => {
     let count = 0;
-    
+
     // Personal Info
     if (data.personalInfo.firstName) count++;
     if (data.personalInfo.lastName) count++;
@@ -50,10 +56,10 @@ export default function FormWizard({
     if (data.personalInfo.address) count++;
     if (data.personalInfo.city) count++;
     if (data.personalInfo.country) count++;
-    
+
     // Summary
     if (data.summary) count++;
-    
+
     // Education
     data.education.forEach((edu) => {
       if (edu.degree) count++;
@@ -61,7 +67,7 @@ export default function FormWizard({
       if (edu.startDate) count++;
       if (edu.endDate) count++;
     });
-    
+
     // Experience
     data.experience.forEach((exp) => {
       if (exp.title) count++;
@@ -70,12 +76,12 @@ export default function FormWizard({
       if (exp.endDate) count++;
       if (exp.description) count++;
     });
-    
+
     // Skills
     data.skills.forEach((skill) => {
       if (skill.name) count++;
     });
-    
+
     setCompletedInputs(count);
   }, [data]);
 
@@ -193,14 +199,16 @@ export default function FormWizard({
       title: "نام",
       component: (
         <div>
-          <label className="block text-sm font-medium mb-1">نام</label>
+          <label className="text-black block text-sm font-medium mb-1">
+            نام
+          </label>
           <input
             type="text"
             value={data.personalInfo.firstName}
             onChange={(e) => updatePersonalInfo("firstName", e.target.value)}
             onFocus={() => setIsInputFocused(true)}
             onBlur={() => setIsInputFocused(false)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
           />
         </div>
       ),
@@ -210,14 +218,16 @@ export default function FormWizard({
       title: "نام خانوادگی",
       component: (
         <div>
-          <label className="block text-sm font-medium mb-1">نام خانوادگی</label>
+          <label className="text-black block text-sm font-medium mb-1">
+            نام خانوادگی
+          </label>
           <input
             type="text"
             value={data.personalInfo.lastName}
             onChange={(e) => updatePersonalInfo("lastName", e.target.value)}
             onFocus={() => setIsInputFocused(true)}
             onBlur={() => setIsInputFocused(false)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
           />
         </div>
       ),
@@ -227,14 +237,16 @@ export default function FormWizard({
       title: "ایمیل",
       component: (
         <div>
-          <label className="block text-sm font-medium mb-1">ایمیل</label>
+          <label className="text-black block text-sm font-medium mb-1">
+            ایمیل
+          </label>
           <input
             type="email"
             value={data.personalInfo.email}
             onChange={(e) => updatePersonalInfo("email", e.target.value)}
             onFocus={() => setIsInputFocused(true)}
             onBlur={() => setIsInputFocused(false)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
           />
         </div>
       ),
@@ -244,14 +256,16 @@ export default function FormWizard({
       title: "تلفن",
       component: (
         <div>
-          <label className="block text-sm font-medium mb-1">تلفن</label>
+          <label className="text-black block text-sm font-medium mb-1">
+            تلفن
+          </label>
           <input
             type="tel"
             value={data.personalInfo.phone}
             onChange={(e) => updatePersonalInfo("phone", e.target.value)}
             onFocus={() => setIsInputFocused(true)}
             onBlur={() => setIsInputFocused(false)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
           />
         </div>
       ),
@@ -261,14 +275,16 @@ export default function FormWizard({
       title: "آدرس",
       component: (
         <div>
-          <label className="block text-sm font-medium mb-1">آدرس</label>
+          <label className="text-black block text-sm font-medium mb-1">
+            آدرس
+          </label>
           <input
             type="text"
             value={data.personalInfo.address}
             onChange={(e) => updatePersonalInfo("address", e.target.value)}
             onFocus={() => setIsInputFocused(true)}
             onBlur={() => setIsInputFocused(false)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
           />
         </div>
       ),
@@ -278,14 +294,16 @@ export default function FormWizard({
       title: "شهر",
       component: (
         <div>
-          <label className="block text-sm font-medium mb-1">شهر</label>
+          <label className="text-black block text-sm font-medium mb-1">
+            شهر
+          </label>
           <input
             type="text"
             value={data.personalInfo.city}
             onChange={(e) => updatePersonalInfo("city", e.target.value)}
             onFocus={() => setIsInputFocused(true)}
             onBlur={() => setIsInputFocused(false)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
           />
         </div>
       ),
@@ -295,14 +313,16 @@ export default function FormWizard({
       title: "کشور",
       component: (
         <div>
-          <label className="block text-sm font-medium mb-1">کشور</label>
+          <label className="text-black block text-sm font-medium mb-1">
+            کشور
+          </label>
           <input
             type="text"
             value={data.personalInfo.country}
             onChange={(e) => updatePersonalInfo("country", e.target.value)}
             onFocus={() => setIsInputFocused(true)}
             onBlur={() => setIsInputFocused(false)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
           />
         </div>
       ),
@@ -312,14 +332,16 @@ export default function FormWizard({
       title: "خلاصه حرفه‌ای",
       component: (
         <div>
-          <label className="block text-sm font-medium mb-1">خلاصه حرفه‌ای</label>
+          <label className="text-black block text-sm font-medium mb-1">
+            خلاصه حرفه‌ای
+          </label>
           <textarea
             value={data.summary}
             onChange={(e) => updateSummary(e.target.value)}
             onFocus={() => setIsInputFocused(true)}
             onBlur={() => setIsInputFocused(false)}
             rows={4}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
             placeholder="خلاصه حرفه‌ای خود را بنویسید..."
           />
         </div>
@@ -353,230 +375,276 @@ export default function FormWizard({
     title: "تحصیلات",
     fields: ["education"],
     component: (
-        <div className="space-y-4">
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-bold">تحصیلات</h2>
-            <button
-              onClick={addEducation}
-              className="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 text-sm"
-            >
-              + افزودن
-            </button>
-          </div>
-          {data.education.map((edu, index) => (
-            <div key={edu.id} className="p-4 border border-gray-200 rounded-md space-y-3">
-              <div className="flex justify-between items-center">
-                <h3 className="font-semibold">تحصیلات #{index + 1}</h3>
-                <button
-                  onClick={() => removeEducation(edu.id)}
-                  className="text-red-600 hover:text-red-800 text-sm"
-                >
-                  حذف
-                </button>
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
+          <h2 className="text-xl font-bold">تحصیلات</h2>
+          <button
+            onClick={addEducation}
+            className="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 text-sm"
+          >
+            + افزودن
+          </button>
+        </div>
+        {data.education.map((edu, index) => (
+          <div
+            key={edu.id}
+            className="p-4 border border-gray-200 rounded-md space-y-3"
+          >
+            <div className="flex justify-between items-center">
+              <h3 className="font-semibold">تحصیلات #{index + 1}</h3>
+              <button
+                onClick={() => removeEducation(edu.id)}
+                className="text-red-600 hover:text-red-800 text-sm"
+              >
+                حذف
+              </button>
+            </div>
+            <div className="grid grid-cols-1 gap-3">
+              <div>
+                <label className="text-black block text-sm font-medium mb-1">
+                  مدرک
+                </label>
+                <input
+                  type="text"
+                  value={edu.degree}
+                  onChange={(e) =>
+                    updateEducation(edu.id, "degree", e.target.value)
+                  }
+                  onFocus={() => setIsInputFocused(true)}
+                  onBlur={() => setIsInputFocused(false)}
+                  className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+                />
               </div>
-              <div className="grid grid-cols-1 gap-3">
+              <div>
+                <label className="text-black block text-sm font-medium mb-1">
+                  موسسه
+                </label>
+                <input
+                  type="text"
+                  value={edu.institution}
+                  onChange={(e) =>
+                    updateEducation(edu.id, "institution", e.target.value)
+                  }
+                  onFocus={() => setIsInputFocused(true)}
+                  onBlur={() => setIsInputFocused(false)}
+                  className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium mb-1">مدرک</label>
+                  <label className="text-black block text-sm font-medium mb-1">
+                    تاریخ شروع
+                  </label>
                   <input
                     type="text"
-                    value={edu.degree}
-                    onChange={(e) => updateEducation(edu.id, "degree", e.target.value)}
+                    value={edu.startDate}
+                    onChange={(e) =>
+                      updateEducation(edu.id, "startDate", e.target.value)
+                    }
                     onFocus={() => setIsInputFocused(true)}
                     onBlur={() => setIsInputFocused(false)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+                    placeholder="مثال: 2018"
+                    className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">موسسه</label>
+                  <label className="text-black block text-sm font-medium mb-1">
+                    تاریخ پایان
+                  </label>
                   <input
                     type="text"
-                    value={edu.institution}
-                    onChange={(e) => updateEducation(edu.id, "institution", e.target.value)}
+                    value={edu.endDate}
+                    onChange={(e) =>
+                      updateEducation(edu.id, "endDate", e.target.value)
+                    }
                     onFocus={() => setIsInputFocused(true)}
                     onBlur={() => setIsInputFocused(false)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+                    placeholder="مثال: 2022"
+                    className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
                   />
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-sm font-medium mb-1">تاریخ شروع</label>
-                    <input
-                      type="text"
-                      value={edu.startDate}
-                      onChange={(e) => updateEducation(edu.id, "startDate", e.target.value)}
-                      onFocus={() => setIsInputFocused(true)}
-                      onBlur={() => setIsInputFocused(false)}
-                      placeholder="مثال: 2018"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1">تاریخ پایان</label>
-                    <input
-                      type="text"
-                      value={edu.endDate}
-                      onChange={(e) => updateEducation(edu.id, "endDate", e.target.value)}
-                      onFocus={() => setIsInputFocused(true)}
-                      onBlur={() => setIsInputFocused(false)}
-                      placeholder="مثال: 2022"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
-                    />
-                  </div>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-      ),
-    });
+          </div>
+        ))}
+      </div>
+    ),
+  });
 
   steps.push({
     id: "experience",
     title: "تجربه کاری",
     fields: ["experience"],
     component: (
-        <div className="space-y-4">
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-bold">تجربه کاری</h2>
-            <button
-              onClick={addExperience}
-              className="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 text-sm"
-            >
-              + افزودن
-            </button>
-          </div>
-          {data.experience.map((exp, index) => (
-            <div key={exp.id} className="p-4 border border-gray-200 rounded-md space-y-3">
-              <div className="flex justify-between items-center">
-                <h3 className="font-semibold">تجربه #{index + 1}</h3>
-                <button
-                  onClick={() => removeExperience(exp.id)}
-                  className="text-red-600 hover:text-red-800 text-sm"
-                >
-                  حذف
-                </button>
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
+          <h2 className="text-xl font-bold">تجربه کاری</h2>
+          <button
+            onClick={addExperience}
+            className="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 text-sm"
+          >
+            + افزودن
+          </button>
+        </div>
+        {data.experience.map((exp, index) => (
+          <div
+            key={exp.id}
+            className="p-4 border border-gray-200 rounded-md space-y-3"
+          >
+            <div className="flex justify-between items-center">
+              <h3 className="font-semibold">تجربه #{index + 1}</h3>
+              <button
+                onClick={() => removeExperience(exp.id)}
+                className="text-red-600 hover:text-red-800 text-sm"
+              >
+                حذف
+              </button>
+            </div>
+            <div className="grid grid-cols-1 gap-3">
+              <div>
+                <label className="text-black block text-sm font-medium mb-1">
+                  عنوان شغل
+                </label>
+                <input
+                  type="text"
+                  value={exp.title}
+                  onChange={(e) =>
+                    updateExperience(exp.id, "title", e.target.value)
+                  }
+                  onFocus={() => setIsInputFocused(true)}
+                  onBlur={() => setIsInputFocused(false)}
+                  className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+                />
               </div>
-              <div className="grid grid-cols-1 gap-3">
+              <div>
+                <label className="text-black block text-sm font-medium mb-1">
+                  شرکت
+                </label>
+                <input
+                  type="text"
+                  value={exp.company}
+                  onChange={(e) =>
+                    updateExperience(exp.id, "company", e.target.value)
+                  }
+                  onFocus={() => setIsInputFocused(true)}
+                  onBlur={() => setIsInputFocused(false)}
+                  className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium mb-1">عنوان شغل</label>
+                  <label className="text-black block text-sm font-medium mb-1">
+                    تاریخ شروع
+                  </label>
                   <input
                     type="text"
-                    value={exp.title}
-                    onChange={(e) => updateExperience(exp.id, "title", e.target.value)}
+                    value={exp.startDate}
+                    onChange={(e) =>
+                      updateExperience(exp.id, "startDate", e.target.value)
+                    }
                     onFocus={() => setIsInputFocused(true)}
                     onBlur={() => setIsInputFocused(false)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+                    placeholder="مثال: Jan 2020"
+                    className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">شرکت</label>
+                  <label className="text-black block text-sm font-medium mb-1">
+                    تاریخ پایان
+                  </label>
                   <input
                     type="text"
-                    value={exp.company}
-                    onChange={(e) => updateExperience(exp.id, "company", e.target.value)}
+                    value={exp.endDate}
+                    onChange={(e) =>
+                      updateExperience(exp.id, "endDate", e.target.value)
+                    }
                     onFocus={() => setIsInputFocused(true)}
                     onBlur={() => setIsInputFocused(false)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+                    placeholder="مثال: Present"
+                    className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-sm font-medium mb-1">تاریخ شروع</label>
-                    <input
-                      type="text"
-                      value={exp.startDate}
-                      onChange={(e) => updateExperience(exp.id, "startDate", e.target.value)}
-                      onFocus={() => setIsInputFocused(true)}
-                      onBlur={() => setIsInputFocused(false)}
-                      placeholder="مثال: Jan 2020"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1">تاریخ پایان</label>
-                    <input
-                      type="text"
-                      value={exp.endDate}
-                      onChange={(e) => updateExperience(exp.id, "endDate", e.target.value)}
-                      onFocus={() => setIsInputFocused(true)}
-                      onBlur={() => setIsInputFocused(false)}
-                      placeholder="مثال: Present"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">توضیحات</label>
-                  <textarea
-                    value={exp.description}
-                    onChange={(e) => updateExperience(exp.id, "description", e.target.value)}
-                    onFocus={() => setIsInputFocused(true)}
-                    onBlur={() => setIsInputFocused(false)}
-                    rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
-                  />
-                </div>
+              </div>
+              <div>
+                <label className="text-black block text-sm font-medium mb-1">
+                  توضیحات
+                </label>
+                <textarea
+                  value={exp.description}
+                  onChange={(e) =>
+                    updateExperience(exp.id, "description", e.target.value)
+                  }
+                  onFocus={() => setIsInputFocused(true)}
+                  onBlur={() => setIsInputFocused(false)}
+                  rows={3}
+                  className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+                />
               </div>
             </div>
-          ))}
-        </div>
-      ),
-    });
+          </div>
+        ))}
+      </div>
+    ),
+  });
 
   steps.push({
     id: "skills",
     title: "مهارت‌ها",
     fields: ["skills"],
     component: (
-        <div className="space-y-4">
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-bold">مهارت‌ها</h2>
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
+          <h2 className="text-xl font-bold">مهارت‌ها</h2>
+          <button
+            onClick={addSkill}
+            className="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 text-sm"
+          >
+            + افزودن
+          </button>
+        </div>
+        {data.skills.map((skill, index) => (
+          <div key={skill.id} className="flex gap-3 items-end">
+            <div className="flex-1">
+              <label className="text-black block text-sm font-medium mb-1">
+                نام مهارت
+              </label>
+              <input
+                type="text"
+                value={skill.name}
+                onChange={(e) => updateSkill(skill.id, "name", e.target.value)}
+                onFocus={() => setIsInputFocused(true)}
+                onBlur={() => setIsInputFocused(false)}
+                className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+              />
+            </div>
+            <div className="w-32">
+              <label className="text-black block text-sm font-medium mb-1">
+                سطح
+              </label>
+              <select
+                value={skill.level}
+                onChange={(e) => updateSkill(skill.id, "level", e.target.value)}
+                onFocus={() => setIsInputFocused(true)}
+                onBlur={() => setIsInputFocused(false)}
+                className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+              >
+                <option value="beginner">مبتدی</option>
+                <option value="intermediate">متوسط</option>
+                <option value="advanced">پیشرفته</option>
+                <option value="expert">متخصص</option>
+              </select>
+            </div>
             <button
-              onClick={addSkill}
-              className="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 text-sm"
+              onClick={() => removeSkill(skill.id)}
+              className="text-red-600 hover:text-red-800 px-2 py-2"
             >
-              + افزودن
+              حذف
             </button>
           </div>
-          {data.skills.map((skill, index) => (
-            <div key={skill.id} className="flex gap-3 items-end">
-              <div className="flex-1">
-                <label className="block text-sm font-medium mb-1">نام مهارت</label>
-                <input
-                  type="text"
-                  value={skill.name}
-                  onChange={(e) => updateSkill(skill.id, "name", e.target.value)}
-                  onFocus={() => setIsInputFocused(true)}
-                  onBlur={() => setIsInputFocused(false)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
-                />
-              </div>
-              <div className="w-32">
-                <label className="block text-sm font-medium mb-1">سطح</label>
-                <select
-                  value={skill.level}
-                  onChange={(e) => updateSkill(skill.id, "level", e.target.value)}
-                  onFocus={() => setIsInputFocused(true)}
-                  onBlur={() => setIsInputFocused(false)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
-                >
-                  <option value="beginner">مبتدی</option>
-                  <option value="intermediate">متوسط</option>
-                  <option value="advanced">پیشرفته</option>
-                  <option value="expert">متخصص</option>
-                </select>
-              </div>
-              <button
-                onClick={() => removeSkill(skill.id)}
-                className="text-red-600 hover:text-red-800 px-2 py-2"
-              >
-                حذف
-              </button>
-            </div>
-          ))}
-        </div>
-      ),
-    });
+        ))}
+      </div>
+    ),
+  });
 
   return (
     <>
@@ -645,4 +713,3 @@ export default function FormWizard({
     </>
   );
 }
-
