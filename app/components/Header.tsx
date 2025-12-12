@@ -42,10 +42,10 @@ export default function Header() {
           </button>
 
           {/* Logo and Slogan - Centered */}
-          <div className="flex flex-col items-center">
+          <Link href="/" className="flex flex-col items-center cursor-pointer">
             <h1 className="text-xl font-bold text-black">Logo</h1>
             <p className="text-xs text-gray-500">slogan</p>
-          </div>
+          </Link>
 
           {/* User Icon - Fixed Right */}
           <Link
