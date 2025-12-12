@@ -5,9 +5,63 @@ import { CVData } from "@/lib/types";
 
 interface Template02Props {
   data: CVData;
+  completedField?: string;
+  nextFieldToEdit?: string;
+  onSectionClick?: (fieldId: string) => void;
+  isZooming?: boolean;
+  zoomTarget?: string;
+  completionPercentage?: number;
 }
 
-export default function Template02({ data }: Template02Props) {
+export default function Template02({
+  data,
+  completedField,
+  nextFieldToEdit,
+  onSectionClick,
+  isZooming,
+  zoomTarget,
+  completionPercentage,
+}: Template02Props) {
+  const isCompleted = (fieldId: string) => completedField === fieldId;
+  const isNextField = (fieldId: string) => nextFieldToEdit === fieldId;
+  const isZoomTarget = (fieldId: string) => isZooming && zoomTarget === fieldId;
+
+  const getSectionClass = (fieldId: string) => {
+    const baseClass = "transition-all duration-700 ease-out";
+    if (isCompleted(fieldId)) {
+      return `${baseClass} ring-4 ring-green-500 ring-offset-4 z-10 relative bg-green-50/30 rounded-lg p-2 -m-2`;
+    }
+    if (isNextField(fieldId)) {
+      return `${baseClass} ring-2 ring-blue-400 ring-offset-2 scale-[1.02] z-5 relative bg-blue-50/20 rounded-md p-1 -m-1 cursor-pointer hover:ring-blue-500 hover:scale-[1.05]`;
+    }
+    if (isZoomTarget(fieldId)) {
+      return `transition-all duration-800 ease-in-out ring-4 ring-blue-600 ring-offset-4 scale-150 z-50 relative bg-blue-100/50 rounded-lg p-4 -m-4 opacity-100`;
+    }
+    return baseClass;
+  };
+
+  const getFieldLabel = (fieldId: string): string => {
+    const labels: Record<string, string> = {
+      firstName: "نام",
+      lastName: "نام خانوادگی",
+      email: "ایمیل",
+      phone: "تلفن",
+      address: "آدرس",
+      city: "شهر",
+      country: "کشور",
+      summary: "خلاصه حرفه‌ای",
+      education: "تحصیلات",
+      experience: "تجربه کاری",
+      skills: "مهارت‌ها",
+    };
+    return labels[fieldId] || fieldId;
+  };
+
+  const handleClick = (fieldId: string) => {
+    if (isNextField(fieldId) && onSectionClick) {
+      onSectionClick(fieldId);
+    }
+  };
   const getSkillRating = (skillName: string): number => {
     const skill = data.skills.find((s) => s.name === skillName);
     if (!skill) return 0;
@@ -38,13 +92,45 @@ export default function Template02({ data }: Template02Props) {
 
   return (
     <div className="w-[595px] h-[842px] relative bg-stone-300 overflow-hidden">
+      {/* Click Me Indicator for Next Field */}
+      {nextFieldToEdit && !isZooming && (
+        <div
+          className="absolute z-[100] pointer-events-none"
+          style={{ top: 0, left: 0, right: 0, bottom: 0 }}
+        >
+          <div
+            className="absolute"
+            style={{
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+            }}
+          >
+            <div className="relative">
+              <div className="absolute -top-20 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
+                <div className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg text-xs font-bold animate-bounce flex items-center gap-2">
+                  <span>👆</span>
+                  <span>کلیک کنید - {getFieldLabel(nextFieldToEdit)}</span>
+                </div>
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-blue-600"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {/* Footer bar */}
       <div className="w-[595px] h-6 left-0 top-[818px] absolute bg-stone-500" />
 
       {/* Right Column */}
       <div className="w-72 left-[306px] top-[302px] absolute inline-flex flex-col justify-start items-start gap-6">
         {/* Work Experience */}
-        <div className="self-stretch flex flex-col justify-start items-end gap-2">
+        <div
+          data-field-id="experience"
+          onClick={() => handleClick("experience")}
+          className={`self-stretch flex flex-col justify-start items-end gap-2 ${getSectionClass(
+            "experience"
+          )}`}
+        >
           <div
             data-line-position="Right"
             className="self-stretch inline-flex justify-start items-center gap-2"
@@ -198,7 +284,13 @@ export default function Template02({ data }: Template02Props) {
         </div>
 
         {/* Skills */}
-        <div className="self-stretch pr-6 flex flex-col justify-start items-start gap-2">
+        <div
+          data-field-id="skills"
+          onClick={() => handleClick("skills")}
+          className={`self-stretch pr-6 flex flex-col justify-start items-start gap-2 ${getSectionClass(
+            "skills"
+          )}`}
+        >
           <div
             data-line-position="Left"
             className="w-20 inline-flex justify-start items-center gap-2"
@@ -248,7 +340,13 @@ export default function Template02({ data }: Template02Props) {
       {/* Right Column - Top */}
       <div className="w-72 left-[306px] top-[48px] absolute inline-flex flex-col justify-start items-start gap-6">
         {/* Profile */}
-        <div className="self-stretch flex flex-col justify-start items-start gap-2">
+        <div
+          data-field-id="summary"
+          onClick={() => handleClick("summary")}
+          className={`self-stretch flex flex-col justify-start items-start gap-2 ${getSectionClass(
+            "summary"
+          )}`}
+        >
           <div
             data-line-position="Right"
             className="self-stretch inline-flex justify-start items-center gap-2"
@@ -265,7 +363,13 @@ export default function Template02({ data }: Template02Props) {
         </div>
 
         {/* Education */}
-        <div className="self-stretch flex flex-col justify-start items-end gap-2">
+        <div
+          data-field-id="education"
+          onClick={() => handleClick("education")}
+          className={`self-stretch flex flex-col justify-start items-end gap-2 ${getSectionClass(
+            "education"
+          )}`}
+        >
           <div
             data-line-position="Right"
             className="self-stretch inline-flex justify-start items-center gap-2"
@@ -326,12 +430,24 @@ export default function Template02({ data }: Template02Props) {
       {/* Left Column - Top */}
       <div className="w-72 left-0 top-[48px] absolute inline-flex flex-col justify-start items-start gap-6">
         {/* Name and Position */}
-        <div className="self-stretch pl-12 flex flex-col justify-start items-start gap-1">
+        <div
+          data-field-id="firstName"
+          onClick={() => handleClick("firstName")}
+          className={`self-stretch pl-12 flex flex-col justify-start items-start gap-1 ${getSectionClass(
+            "firstName"
+          )}`}
+        >
           <div className="self-stretch flex flex-col justify-start items-start">
             <div className="self-stretch justify-start text-zinc-600 text-2xl font-bold font-[var(--font-passion-one)] uppercase">
               {data.personalInfo.firstName || "Name"}
             </div>
-            <div className="self-stretch justify-start text-zinc-600 text-2xl font-bold font-[var(--font-passion-one)] uppercase">
+            <div
+              data-field-id="lastName"
+              onClick={() => handleClick("lastName")}
+              className={`self-stretch justify-start text-zinc-600 text-2xl font-bold font-[var(--font-passion-one)] uppercase ${getSectionClass(
+                "lastName"
+              )}`}
+            >
               {data.personalInfo.lastName || "Surname"}
             </div>
           </div>
@@ -341,7 +457,13 @@ export default function Template02({ data }: Template02Props) {
         </div>
 
         {/* Contact */}
-        <div className="self-stretch flex flex-col justify-start items-start gap-2">
+        <div
+          data-field-id="phone"
+          onClick={() => handleClick("phone")}
+          className={`self-stretch flex flex-col justify-start items-start gap-2 ${getSectionClass(
+            "phone"
+          )}`}
+        >
           <div
             data-line-position="Left"
             className="w-24 inline-flex justify-start items-center gap-2"
@@ -362,7 +484,13 @@ export default function Template02({ data }: Template02Props) {
                 {data.personalInfo.phone || "+31 6 12345678"}
               </div>
             </div>
-            <div className="self-stretch inline-flex justify-start items-center">
+            <div
+              data-field-id="email"
+              onClick={() => handleClick("email")}
+              className={`self-stretch inline-flex justify-start items-center ${getSectionClass(
+                "email"
+              )}`}
+            >
               <div className="w-20 h-3 relative">
                 <div className="w-20 left-0 top-0 absolute justify-start text-stone-500 text-[8px] font-semibold font-[var(--font-poppins)]">
                   MAIL
@@ -372,7 +500,13 @@ export default function Template02({ data }: Template02Props) {
                 {data.personalInfo.email || "Example@gmail.com"}
               </div>
             </div>
-            <div className="self-stretch inline-flex justify-start items-start">
+            <div
+              data-field-id="address"
+              onClick={() => handleClick("address")}
+              className={`self-stretch inline-flex justify-start items-start ${getSectionClass(
+                "address"
+              )}`}
+            >
               <div className="w-20 h-3 relative">
                 <div className="w-20 left-0 top-0 absolute justify-start text-stone-500 text-[8px] font-semibold font-[var(--font-poppins)]">
                   LOCATION
@@ -383,10 +517,22 @@ export default function Template02({ data }: Template02Props) {
                   {data.personalInfo.address || "Example street 103"}
                 </div>
                 <div className="self-stretch inline-flex justify-start items-center gap-2">
-                  <div className="w-9 text-justify justify-start text-zinc-600 text-[8px] font-semibold font-[var(--font-poppins)]">
+                  <div
+                    data-field-id="city"
+                    onClick={() => handleClick("city")}
+                    className={`w-9 text-justify justify-start text-zinc-600 text-[8px] font-semibold font-[var(--font-poppins)] ${getSectionClass(
+                      "city"
+                    )}`}
+                  >
                     {data.personalInfo.city || "3044PE"}
                   </div>
-                  <div className="flex-1 text-justify justify-start text-zinc-600 text-[8px] font-semibold font-[var(--font-poppins)]">
+                  <div
+                    data-field-id="country"
+                    onClick={() => handleClick("country")}
+                    className={`flex-1 text-justify justify-start text-zinc-600 text-[8px] font-semibold font-[var(--font-poppins)] ${getSectionClass(
+                      "country"
+                    )}`}
+                  >
                     {data.personalInfo.country || "Amsterdam"}
                   </div>
                 </div>

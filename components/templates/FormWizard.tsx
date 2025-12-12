@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   CVData,
   PersonalInfo,
@@ -8,7 +8,6 @@ import {
   Experience,
   Skill,
 } from "@/lib/types";
-import Template02 from "./Template02";
 import MobilePreviewModal from "./MobilePreviewModal";
 
 interface FormWizardProps {
@@ -34,6 +33,11 @@ export default function FormWizard({
   const [showPreview, setShowPreview] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
+  const [completedField, setCompletedField] = useState<string | undefined>();
+  const [nextFieldToEdit, setNextFieldToEdit] = useState<string | undefined>();
+  const [isZooming, setIsZooming] = useState(false);
+  const [zoomTarget, setZoomTarget] = useState<string | undefined>();
+  const previewRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -84,6 +88,29 @@ export default function FormWizard({
 
     setCompletedInputs(count);
   }, [data]);
+
+  // Calculate total fields and completion percentage
+  const calculateCompletionPercentage = (): number => {
+    let totalFields = 0;
+
+    // Personal Info fields
+    totalFields += 7; // firstName, lastName, email, phone, address, city, country
+
+    // Summary
+    totalFields += 1;
+
+    // Education (assuming max 3 entries, 4 fields each)
+    totalFields += 3 * 4; // degree, institution, startDate, endDate
+
+    // Experience (assuming max 3 entries, 5 fields each)
+    totalFields += 3 * 5; // title, company, startDate, endDate, description
+
+    // Skills (assuming max 10)
+    totalFields += 10;
+
+    if (totalFields === 0) return 0;
+    return Math.round((completedInputs / totalFields) * 100);
+  };
 
   const updatePersonalInfo = (field: keyof PersonalInfo, value: string) => {
     onChange({
@@ -368,6 +395,54 @@ export default function FormWizard({
       ),
     });
   }
+
+  // Map field IDs to step indices
+  const getFieldToStepMap = () => {
+    const map: Record<string, number> = {};
+    steps.forEach((step, index) => {
+      step.fields.forEach((field) => {
+        map[field] = index;
+      });
+    });
+    return map;
+  };
+
+  // Get completed field from current step
+  const getCompletedFieldFromStep = (stepIndex: number): string | undefined => {
+    if (stepIndex < 0 || stepIndex >= steps.length) return undefined;
+    const step = steps[stepIndex];
+    // Return the first field of the step as the completed field
+    return step.fields[0];
+  };
+
+  // Get next field to edit based on current step
+  const getNextFieldFromStep = (stepIndex: number): string | undefined => {
+    if (stepIndex < 0 || stepIndex >= steps.length - 1) return undefined;
+    const nextStep = steps[stepIndex + 1];
+    return nextStep.fields[0];
+  };
+
+  // Handle section click in preview
+  const handleSectionClick = (fieldId: string) => {
+    const fieldToStepMap = getFieldToStepMap();
+    const targetStep = fieldToStepMap[fieldId];
+
+    if (targetStep !== undefined) {
+      // Start zoom animation
+      setIsZooming(true);
+      setZoomTarget(fieldId);
+
+      // Close preview and navigate after zoom animation
+      setTimeout(() => {
+        setShowPreview(false);
+        setCurrentStep(targetStep);
+        setIsZooming(false);
+        setZoomTarget(undefined);
+        setCompletedField(undefined);
+        setNextFieldToEdit(undefined);
+      }, 800);
+    }
+  };
 
   // Add education, experience, and skills as separate steps
   steps.push({
@@ -683,16 +758,14 @@ export default function FormWizard({
         <button
           onClick={() => {
             if (currentStep < steps.length - 1) {
-              // Show preview before moving to next step
-              if (isMobile) {
-                setShowPreview(true);
-                setTimeout(() => {
-                  setShowPreview(false);
-                  setCurrentStep(currentStep + 1);
-                }, 3000);
-              } else {
-                setCurrentStep(currentStep + 1);
-              }
+              // Set completed field and next field
+              const completed = getCompletedFieldFromStep(currentStep);
+              const next = getNextFieldFromStep(currentStep);
+              setCompletedField(completed);
+              setNextFieldToEdit(next);
+
+              // Show preview
+              setShowPreview(true);
             }
           }}
           disabled={currentStep === steps.length - 1}
@@ -702,12 +775,23 @@ export default function FormWizard({
         </button>
       </div>
 
-      {/* Auto Preview Modal (Mobile) */}
-      {isMobile && showPreview && (
+      {/* Preview Modal */}
+      {showPreview && (
         <MobilePreviewModal
           data={data}
           isOpen={showPreview}
-          onClose={() => setShowPreview(false)}
+          onClose={() => {
+            setShowPreview(false);
+            setCompletedField(undefined);
+            setNextFieldToEdit(undefined);
+          }}
+          completedField={completedField}
+          nextFieldToEdit={nextFieldToEdit}
+          previewRef={previewRef}
+          onSectionClick={handleSectionClick}
+          isZooming={isZooming}
+          zoomTarget={zoomTarget}
+          completionPercentage={calculateCompletionPercentage()}
         />
       )}
     </>
