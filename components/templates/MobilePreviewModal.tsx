@@ -5,9 +5,12 @@ import Template02 from "./Template02";
 import { CVData } from "@/lib/types";
 
 interface MobilePreviewModalProps {
-  data: CVData;
   isOpen: boolean;
   onClose: () => void;
+  /** Template 02 preview data */
+  data?: CVData;
+  /** Custom preview (e.g. Minimalist template) */
+  renderPreview?: () => React.ReactNode;
   completedField?: string;
   nextFieldToEdit?: string;
   previewRef?: React.RefObject<HTMLDivElement | null>;
@@ -21,6 +24,7 @@ export default function MobilePreviewModal({
   data,
   isOpen,
   onClose,
+  renderPreview,
   completedField,
   nextFieldToEdit,
   previewRef,
@@ -35,16 +39,28 @@ export default function MobilePreviewModal({
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => setIsMounted(true), 100);
-      // Small delay to trigger animation
       setTimeout(() => setIsVisible(true), 10);
     } else {
       setTimeout(() => setIsVisible(false), 100);
-      // Wait for animation to complete before unmounting
       setTimeout(() => setIsMounted(false), 300);
     }
   }, [isOpen]);
 
   if (!isMounted) return null;
+
+  const previewContent = renderPreview ? (
+    renderPreview()
+  ) : data ? (
+    <Template02
+      data={data}
+      completedField={completedField}
+      nextFieldToEdit={nextFieldToEdit}
+      onSectionClick={onSectionClick}
+      isZooming={isZooming}
+      zoomTarget={zoomTarget}
+      completionPercentage={completionPercentage}
+    />
+  ) : null;
 
   return (
     <div
@@ -52,8 +68,8 @@ export default function MobilePreviewModal({
         isZooming
           ? "bg-white bg-opacity-100 opacity-100"
           : isVisible
-          ? "bg-black bg-opacity-80 opacity-100"
-          : "bg-black bg-opacity-0 opacity-0"
+            ? "bg-black bg-opacity-80 opacity-100"
+            : "bg-black bg-opacity-0 opacity-0"
       }`}
       onClick={onClose}
     >
@@ -62,12 +78,11 @@ export default function MobilePreviewModal({
           isVisible && !isZooming
             ? "scale-100 translate-y-0 opacity-100"
             : isZooming
-            ? "opacity-0"
-            : "scale-95 translate-y-8 opacity-0"
+              ? "opacity-0"
+              : "scale-95 translate-y-8 opacity-0"
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
         <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-3 shadow-sm">
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-lg font-bold text-gray-900">پیش‌نمایش رزومه</h3>
@@ -94,7 +109,6 @@ export default function MobilePreviewModal({
           )}
         </div>
 
-        {/* Content */}
         <div className="p-4 pb-8">
           <div
             ref={previewRef}
@@ -110,15 +124,7 @@ export default function MobilePreviewModal({
                   : "scale-[0.5] origin-top opacity-100"
               }`}
             >
-              <Template02
-                data={data}
-                completedField={completedField}
-                nextFieldToEdit={nextFieldToEdit}
-                onSectionClick={onSectionClick}
-                isZooming={isZooming}
-                zoomTarget={zoomTarget}
-                completionPercentage={completionPercentage}
-              />
+              {previewContent}
             </div>
           </div>
         </div>

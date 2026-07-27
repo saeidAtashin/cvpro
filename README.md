@@ -16,7 +16,17 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Minimalist CV + Zarinpal
+
+Create a `.env.local` with:
+
+- `ZARINPAL_MERCHANT_ID` — your Zarinpal merchant UUID
+- `ZARINPAL_SANDBOX` — `true` for sandbox (default), `false` for production
+- `PAYMENT_CALLBACK_URL` — e.g. `http://localhost:3000/api/payment/zarinpal/callback`
+- `DOWNLOAD_UNLOCK_SECRET` — long random string (16+ characters) for signed download cookies
+
+Flow: home → **Minimalist CV** → `/minimalist-editor` → fill form & preview → **Pay & download** → after Zarinpal verify, PNG/PDF download is unlocked for 7 days (httpOnly cookie).
+
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 

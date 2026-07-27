@@ -77,46 +77,19 @@ export default function Template02EditorPage() {
     }
 
     try {
-      // Try to load html2canvas dynamically
-      let html2canvasFn: typeof import("html2canvas").default;
-      try {
-        const html2canvasModule = await import("html2canvas");
-        html2canvasFn = html2canvasModule.default;
-      } catch {
-        alert(
-          "برای دانلود PNG، لطفا پکیج html2canvas را نصب کنید:\nnpm install html2canvas"
-        );
-        return;
-      }
-
-      const canvas = await html2canvasFn(templateRef.current, {
-        scale: 2,
-        backgroundColor: "#d6d3d1", // stone-300
-        useCORS: true,
-        logging: false,
-        width: 595,
-        height: 842,
-      });
-
-      canvas.toBlob((blob: Blob | null) => {
-        if (blob) {
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement("a");
-          link.href = url;
-          link.download = `${cvData.personalInfo.firstName || "resume"}_${
-            cvData.personalInfo.lastName || "template"
-          }.png`;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          URL.revokeObjectURL(url);
-        }
-      }, "image/png");
+      const {
+        buildCvFilename,
+        downloadElementAsPng,
+      } = await import("@/lib/export-cv-image");
+      const name = buildCvFilename(
+        cvData.personalInfo.firstName,
+        cvData.personalInfo.lastName,
+        "png"
+      );
+      await downloadElementAsPng(templateRef.current, name, "#d6d3d1");
     } catch (error) {
       console.error("Error generating PNG:", error);
-      alert(
-        "خطا در تولید PNG. لطفا html2canvas را نصب کنید: npm install html2canvas"
-      );
+      alert("خطا در تولید PNG.");
     }
   };
 
@@ -127,57 +100,19 @@ export default function Template02EditorPage() {
     }
 
     try {
-      // Try to load html2canvas and jsPDF dynamically
-      let html2canvasFn: typeof import("html2canvas").default;
-      let jsPDF: typeof import("jspdf").jsPDF;
-
-      try {
-        const html2canvasModule = await import("html2canvas");
-        html2canvasFn = html2canvasModule.default;
-      } catch {
-        alert(
-          "برای دانلود PDF، لطفا پکیج html2canvas را نصب کنید:\nnpm install html2canvas"
-        );
-        return;
-      }
-
-      try {
-        const jsPDFModule = await import("jspdf");
-        jsPDF = jsPDFModule.jsPDF;
-      } catch {
-        alert(
-          "برای دانلود PDF، لطفا پکیج jspdf را نصب کنید:\nnpm install jspdf"
-        );
-        return;
-      }
-
-      const canvas = await html2canvasFn(templateRef.current, {
-        scale: 2,
-        backgroundColor: "#d6d3d1",
-        useCORS: true,
-        logging: false,
-        width: 595,
-        height: 842,
-      });
-
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF({
-        orientation: "portrait",
-        unit: "px",
-        format: [595, 842], // A4 size in pixels
-      });
-
-      pdf.addImage(imgData, "PNG", 0, 0, 595, 842);
-      pdf.save(
-        `${cvData.personalInfo.firstName || "resume"}_${
-          cvData.personalInfo.lastName || "template"
-        }.pdf`
+      const {
+        buildCvFilename,
+        downloadElementAsPdf,
+      } = await import("@/lib/export-cv-image");
+      const name = buildCvFilename(
+        cvData.personalInfo.firstName,
+        cvData.personalInfo.lastName,
+        "pdf"
       );
+      await downloadElementAsPdf(templateRef.current, name, "#d6d3d1");
     } catch (error) {
       console.error("Error generating PDF:", error);
-      alert(
-        "خطا در تولید PDF. لطفا پکیج‌های لازم را نصب کنید:\nnpm install html2canvas jspdf"
-      );
+      alert("خطا در تولید PDF.");
     }
   };
 
