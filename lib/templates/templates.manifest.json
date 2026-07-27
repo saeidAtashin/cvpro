@@ -1,0 +1,20 @@
+{
+  "minimalist-cv-resume": {
+    "name": "Minimalist CV",
+    "layout": "minimalist",
+    "schemaId": "minimalist",
+    "locale": "en",
+    "dir": "ltr",
+    "priceToman": 450000,
+    "enabled": true
+  },
+  "test": {
+    "name": "رزومه عربی",
+    "layout": "centeredRtl",
+    "schemaId": "centeredRtl",
+    "locale": "ar",
+    "dir": "rtl",
+    "priceToman": 450000,
+    "enabled": true
+  }
+}

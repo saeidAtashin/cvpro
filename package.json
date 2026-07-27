@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "templates:sync": "tsx scripts/sync-templates.ts",
+    "prebuild": "npm run templates:sync",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
@@ -21,6 +23,7 @@
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-rnd": "^10.5.2",
+    "sharp": "^0.35.3",
     "zustand": "^5.0.9"
   },
   "devDependencies": {
@@ -32,6 +35,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.0.7",
     "tailwindcss": "^4",
+    "tsx": "^4.23.1",
     "typescript": "^5"
   }
 }

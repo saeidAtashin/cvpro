@@ -56,6 +56,7 @@ export default function MinimalistTemplate({
   return (
     <div
       className="w-[595px] h-[842px] relative flex overflow-hidden bg-white font-[var(--font-poppins,sans-serif)] text-[10px] leading-snug"
+      dir="auto"
       data-export-root
     >
       {/* Sidebar */}

@@ -1,0 +1,265 @@
+{
+  "pageIndex": 0,
+  "pageWidth": 2482,
+  "pageHeight": 3510,
+  "elements": [
+    {
+      "type": "cover",
+      "x": 180,
+      "y": 150,
+      "width": 520,
+      "height": 520,
+      "color": "#1e2a4a"
+    },
+    {
+      "type": "image",
+      "path": "profilePhotoUrl",
+      "x": 220,
+      "y": 190,
+      "width": 440,
+      "height": 440
+    },
+    {
+      "type": "cover",
+      "x": 900,
+      "y": 100,
+      "width": 1500,
+      "height": 200,
+      "color": "#ffffff"
+    },
+    {
+      "type": "text",
+      "valueTemplate": "{personalInfo.firstName} {personalInfo.lastName}",
+      "x": 920,
+      "y": 110,
+      "fontSize": 115,
+      "fontWeight": "bold",
+      "color": "#1e2a4a",
+      "maxWidth": 1450
+    },
+    {
+      "type": "cover",
+      "x": 900,
+      "y": 280,
+      "width": 900,
+      "height": 80,
+      "color": "#ffffff"
+    },
+    {
+      "type": "text",
+      "path": "personalInfo.jobTitle",
+      "x": 920,
+      "y": 290,
+      "fontSize": 42,
+      "fontWeight": "bold",
+      "color": "#6b7280",
+      "maxWidth": 850
+    },
+    {
+      "type": "cover",
+      "x": 120,
+      "y": 720,
+      "width": 640,
+      "height": 220,
+      "color": "#1e2a4a"
+    },
+    {
+      "type": "text",
+      "path": "personalInfo.phone",
+      "x": 140,
+      "y": 760,
+      "fontSize": 34,
+      "color": "#ffffff",
+      "maxWidth": 600
+    },
+    {
+      "type": "text",
+      "path": "personalInfo.email",
+      "x": 140,
+      "y": 820,
+      "fontSize": 34,
+      "color": "#ffffff",
+      "maxWidth": 600
+    },
+    {
+      "type": "text",
+      "path": "personalInfo.address",
+      "x": 140,
+      "y": 880,
+      "fontSize": 34,
+      "color": "#ffffff",
+      "maxWidth": 600
+    },
+    {
+      "type": "cover",
+      "x": 120,
+      "y": 980,
+      "width": 640,
+      "height": 320,
+      "color": "#1e2a4a"
+    },
+    {
+      "type": "text",
+      "path": "bio.birthYear",
+      "x": 140,
+      "y": 1040,
+      "fontSize": 34,
+      "color": "#ffffff",
+      "maxWidth": 600
+    },
+    {
+      "type": "text",
+      "path": "bio.maritalStatus",
+      "x": 140,
+      "y": 1100,
+      "fontSize": 34,
+      "color": "#ffffff",
+      "maxWidth": 600
+    },
+    {
+      "type": "text",
+      "path": "bio.militaryStatus",
+      "x": 140,
+      "y": 1160,
+      "fontSize": 34,
+      "color": "#ffffff",
+      "maxWidth": 600
+    },
+    {
+      "type": "text",
+      "path": "bio.languageSummary",
+      "x": 140,
+      "y": 1220,
+      "fontSize": 34,
+      "color": "#ffffff",
+      "maxWidth": 600
+    },
+    {
+      "type": "cover",
+      "x": 120,
+      "y": 1340,
+      "width": 640,
+      "height": 360,
+      "color": "#1e2a4a"
+    },
+    {
+      "type": "repeatStrings",
+      "arrayPath": "expertise",
+      "maxItems": 8,
+      "startY": 1380,
+      "rowHeight": 42,
+      "x": 160,
+      "fontSize": 34,
+      "color": "#ffffff",
+      "maxWidth": 580,
+      "prefix": "• "
+    },
+    {
+      "type": "cover",
+      "x": 120,
+      "y": 1720,
+      "width": 640,
+      "height": 520,
+      "color": "#1e2a4a"
+    },
+    {
+      "type": "repeat",
+      "arrayPath": "experience",
+      "maxItems": 4,
+      "startY": 1760,
+      "rowHeight": 115,
+      "fields": [
+        {
+          "path": "company",
+          "x": 200,
+          "fontSize": 36,
+          "fontWeight": "bold",
+          "color": "#ffffff",
+          "maxWidth": 520
+        },
+        {
+          "path": "dateRange",
+          "x": 200,
+          "yOffset": 48,
+          "fontSize": 30,
+          "color": "#e5e7eb",
+          "maxWidth": 520
+        }
+      ]
+    },
+    {
+      "type": "cover",
+      "x": 900,
+      "y": 420,
+      "width": 1500,
+      "height": 900,
+      "color": "#ffffff"
+    },
+    {
+      "type": "repeat",
+      "arrayPath": "skillCategories",
+      "maxItems": 3,
+      "startY": 480,
+      "rowHeight": 200,
+      "fields": [
+        {
+          "path": "title",
+          "x": 920,
+          "fontSize": 40,
+          "fontWeight": "bold",
+          "color": "#1e2a4a",
+          "maxWidth": 700
+        }
+      ]
+    },
+    {
+      "type": "cover",
+      "x": 900,
+      "y": 1380,
+      "width": 1500,
+      "height": 2000,
+      "color": "#ffffff"
+    },
+    {
+      "type": "repeat",
+      "arrayPath": "projects",
+      "maxItems": 4,
+      "startY": 1420,
+      "rowHeight": 280,
+      "fields": [
+        {
+          "path": "title",
+          "x": 920,
+          "fontSize": 44,
+          "fontWeight": "bold",
+          "color": "#1e2a4a",
+          "maxWidth": 1400
+        },
+        {
+          "path": "subtitle",
+          "x": 920,
+          "yOffset": 52,
+          "fontSize": 34,
+          "color": "#6b7280",
+          "maxWidth": 1400
+        },
+        {
+          "path": "description",
+          "x": 920,
+          "yOffset": 100,
+          "fontSize": 32,
+          "color": "#374151",
+          "maxWidth": 1400
+        },
+        {
+          "path": "techStack",
+          "x": 920,
+          "yOffset": 180,
+          "fontSize": 30,
+          "color": "#6b7280",
+          "maxWidth": 1400
+        }
+      ]
+    }
+  ]
+}

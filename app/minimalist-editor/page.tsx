@@ -1,16 +1,6 @@
-import { Suspense } from "react";
-import MinimalistEditorClient from "./MinimalistEditorClient";
+import { redirect } from "next/navigation";
+import { PRIMARY_MINIMALIST_SLUG } from "@/lib/templates/catalog";
 
-export default function MinimalistEditorPage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen flex items-center justify-center text-gray-600">
-          Loading editor…
-        </div>
-      }
-    >
-      <MinimalistEditorClient />
-    </Suspense>
-  );
+export default function MinimalistEditorAliasPage() {
+  redirect(`/editors/${PRIMARY_MINIMALIST_SLUG}`);
 }

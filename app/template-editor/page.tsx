@@ -262,7 +262,7 @@ export default function TemplateEditorPage() {
       });
 
       // Education
-      if (data.education.length > 0) {
+      if (data?.education?.length > 0) {
         currentY += 20;
         const eduTitle = svgDoc.createElementNS(namespace, "text");
         eduTitle.setAttribute("x", leftMargin.toString());
@@ -276,7 +276,7 @@ export default function TemplateEditorPage() {
         currentY += 25;
       }
 
-      data.education.forEach((edu) => {
+      data?.education?.forEach((edu) => {
         if (edu.degree || edu.institution) {
           const eduText = svgDoc.createElementNS(namespace, "text");
           eduText.setAttribute("x", leftMargin.toString());
@@ -310,7 +310,7 @@ export default function TemplateEditorPage() {
       });
 
       // Skills
-      if (data.skills.length > 0) {
+      if (data?.skills?.length > 0) {
         currentY += 20;
         const skillsTitle = svgDoc.createElementNS(namespace, "text");
         skillsTitle.setAttribute("x", leftMargin.toString());
@@ -330,7 +330,7 @@ export default function TemplateEditorPage() {
         skillsText.setAttribute("fill", "#000000");
         skillsText.setAttribute("font-family", "Arial, sans-serif");
         skillsText.setAttribute("data-editable", "true");
-        skillsText.textContent = data.skills.map((s) => s.name).join(", ");
+        skillsText.textContent = data?.skills?.map((s) => s.name).join(", ") || "";
         textGroup.appendChild(skillsText);
       }
 
