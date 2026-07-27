@@ -12,6 +12,7 @@ import {
 } from "@/lib/export-cv-image";
 import { AddBlockPanel } from "./panels/AddBlockPanel";
 import { ElementInspector } from "./panels/ElementInspector";
+import { PaperScreenOverlay } from "./paper/PaperScreenOverlay";
 import { PaperSurface } from "./paper/PaperSurface";
 
 const SceneRoot = dynamic(
@@ -95,6 +96,7 @@ export default function Canvas3DEditorClient() {
         {isEdit ? <AddBlockPanel /> : null}
         <main className="flex-1 relative min-w-0">
           <SceneRoot />
+          <PaperScreenOverlay />
           {!isEdit && (
             <p className="absolute bottom-3 left-1/2 -translate-x-1/2 text-xs text-gray-600 bg-white/80 px-3 py-1 rounded-full pointer-events-none">
               Scroll or pinch to zoom · drag to orbit

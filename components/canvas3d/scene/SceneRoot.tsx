@@ -11,6 +11,7 @@ import { StudioBackground } from "./StudioBackground";
 export function SceneRoot() {
   return (
     <Canvas
+      className="!w-full !h-full"
       shadows
       gl={{ antialias: true, alpha: false }}
       dpr={[1, 2]}

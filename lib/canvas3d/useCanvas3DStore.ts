@@ -13,6 +13,7 @@ import type {
   TextVariant,
   ViewMode,
 } from "./types";
+import type { PaperScreenQuad } from "./paper-projection";
 
 function nextId(): string {
   return `el-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
@@ -65,6 +66,7 @@ interface Canvas3DState {
   selectedId: string | null;
   viewMode: ViewMode;
   hydrated: boolean;
+  paperScreen: PaperScreenQuad | null;
   setViewMode: (mode: ViewMode) => void;
   setSelectedId: (id: string | null) => void;
   clearSelection: () => void;
@@ -75,6 +77,7 @@ interface Canvas3DState {
   removeElement: (id: string) => void;
   duplicateElement: (id: string) => void;
   bringForward: (id: string) => void;
+  setPaperScreen: (quad: PaperScreenQuad | null) => void;
   hydrateFromStorage: () => void;
   persistToStorage: () => void;
 }
@@ -153,6 +156,7 @@ export const useCanvas3DStore = create<Canvas3DState>((set, get) => ({
   selectedId: null,
   viewMode: "edit",
   hydrated: false,
+  paperScreen: null,
 
   setViewMode: (mode) => set({ viewMode: mode }),
 
@@ -233,6 +237,8 @@ export const useCanvas3DStore = create<Canvas3DState>((set, get) => ({
       ),
     });
   },
+
+  setPaperScreen: (quad) => set({ paperScreen: quad }),
 
   hydrateFromStorage: () => {
     if (typeof window === "undefined") return;
