@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --webpack",
     "templates:sync": "tsx scripts/sync-templates.ts",
     "prebuild": "npm run templates:sync",
     "build": "next build",
@@ -14,6 +14,8 @@
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
     "@react-pdf/renderer": "^4.3.1",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.6.1",
     "html2canvas": "^1.4.1",
     "jose": "^6.2.4",
     "jspdf": "^3.0.4",
@@ -24,6 +26,7 @@
     "react-dom": "19.2.0",
     "react-rnd": "^10.5.2",
     "sharp": "^0.35.3",
+    "three": "^0.185.1",
     "zustand": "^5.0.9"
   },
   "devDependencies": {
@@ -32,6 +35,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/three": "^0.185.1",
     "eslint": "^9",
     "eslint-config-next": "16.0.7",
     "tailwindcss": "^4",

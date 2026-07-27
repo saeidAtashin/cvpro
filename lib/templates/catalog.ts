@@ -39,6 +39,13 @@ export const LEGACY_TEMPLATE_CATALOG: LegacyTemplateCatalogEntry[] = [
     priceToman: 450_000,
     editorPath: "/template02-editor",
   },
+  {
+    id: "3d-canvas-cv",
+    name: "3D Canvas CV Studio",
+    thumbnail: "/templates/thumbs/3d-canvas-cv.webp",
+    priceToman: 450_000,
+    editorPath: "/3d-canvas-editor",
+  },
 ];
 
 /** PDF-template editors shown first on the landing page */
