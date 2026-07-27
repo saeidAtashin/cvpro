@@ -6,7 +6,11 @@ export type TextVariant =
   | "withIcon"
   | "withImage"
   | "numbered"
-  | "bulleted";
+  | "bulleted"
+  | "sectionTitle"
+  | "subtitle"
+  | "labelValue"
+  | "link";
 
 export type TextAlign = "left" | "center" | "right";
 export type FontWeight = "normal" | "bold";
@@ -20,6 +24,13 @@ export interface Canvas3DElementBase {
   height: number;
   rotation?: number;
   zIndex: number;
+}
+
+export interface Canvas3DShapeElement extends Canvas3DElementBase {
+  type: "shape";
+  fillColor: string;
+  borderRadius?: number;
+  opacity?: number;
 }
 
 export interface Canvas3DImageElement extends Canvas3DElementBase {
@@ -44,11 +55,22 @@ export interface Canvas3DTextElement extends Canvas3DElementBase {
   icon?: string;
   imageSrc?: string;
   listItems?: string[];
+  label?: string;
+  href?: string;
 }
 
-export type Canvas3DElement = Canvas3DImageElement | Canvas3DTextElement;
+export type Canvas3DElement =
+  | Canvas3DShapeElement
+  | Canvas3DImageElement
+  | Canvas3DTextElement;
 
 export type ViewMode = "edit" | "preview";
+
+export function isShapeElement(
+  el: Canvas3DElement
+): el is Canvas3DShapeElement {
+  return el.type === "shape";
+}
 
 export function isImageElement(
   el: Canvas3DElement

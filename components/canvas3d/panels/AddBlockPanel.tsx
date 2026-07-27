@@ -4,10 +4,15 @@ import React from "react";
 import { Button } from "@/components/ui/Button";
 import { useCanvas3DStore } from "@/lib/canvas3d/useCanvas3DStore";
 import type { ImageShape, TextVariant } from "@/lib/canvas3d/types";
+import { TemplatePickerPanel } from "./TemplatePickerPanel";
 
 const TEXT_VARIANTS: { id: TextVariant; label: string }[] = [
   { id: "simple", label: "Simple text" },
   { id: "header", label: "Header" },
+  { id: "sectionTitle", label: "Section title" },
+  { id: "subtitle", label: "Subtitle" },
+  { id: "labelValue", label: "Label + value" },
+  { id: "link", label: "Link" },
   { id: "withIcon", label: "Text + icon" },
   { id: "withImage", label: "Text + image" },
   { id: "numbered", label: "Numbered list" },
@@ -22,6 +27,7 @@ const IMAGE_SHAPES: { id: ImageShape; label: string }[] = [
 
 export function AddBlockPanel() {
   const addImage = useCanvas3DStore((s) => s.addImage);
+  const addShape = useCanvas3DStore((s) => s.addShape);
   const addText = useCanvas3DStore((s) => s.addText);
   const selectedId = useCanvas3DStore((s) => s.selectedId);
   const removeElement = useCanvas3DStore((s) => s.removeElement);
@@ -29,6 +35,18 @@ export function AddBlockPanel() {
 
   return (
     <aside className="w-56 shrink-0 border-r border-gray-200 bg-white p-4 overflow-y-auto flex flex-col gap-4">
+      <TemplatePickerPanel />
+      <div>
+        <h2 className="text-sm font-semibold text-gray-900 mb-2">Shapes</h2>
+        <Button
+          variant="secondary"
+          size="sm"
+          className="w-full justify-start"
+          onClick={() => addShape()}
+        >
+          Background / shape
+        </Button>
+      </div>
       <div>
         <h2 className="text-sm font-semibold text-gray-900 mb-2">Images</h2>
         <div className="flex flex-col gap-1.5">

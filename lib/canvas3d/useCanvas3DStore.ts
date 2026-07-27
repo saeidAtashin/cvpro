@@ -4,6 +4,7 @@ import {
   CANVAS_HEIGHT_PX,
   CANVAS_WIDTH_PX,
 } from "./constants";
+import { DEFAULT_ELEMENTS } from "./default-elements";
 import { DEFAULT_FONT_ID } from "./fonts";
 import type {
   Canvas3DElement,
@@ -14,6 +15,8 @@ import type {
   ViewMode,
 } from "./types";
 import type { PaperScreenQuad } from "./paper-projection";
+import { getTemplateElements } from "./templates/registry";
+import type { Canvas3DShapeElement } from "./types";
 
 function nextId(): string {
   return `el-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
@@ -24,60 +27,26 @@ function maxZIndex(elements: Canvas3DElement[]): number {
   return Math.max(...elements.map((e) => e.zIndex));
 }
 
-export const DEFAULT_ELEMENTS: Canvas3DElement[] = [
-  {
-    id: "default-header",
-    type: "text",
-    variant: "header",
-    x: 40,
-    y: 48,
-    width: 400,
-    height: 56,
-    zIndex: 1,
-    content: "Your name",
-    fontId: DEFAULT_FONT_ID,
-    fontSize: 32,
-    color: "#111827",
-    fontWeight: "bold",
-    align: "left",
-    lineHeight: 1.2,
-  },
-  {
-    id: "default-body",
-    type: "text",
-    variant: "simple",
-    x: 40,
-    y: 120,
-    width: 500,
-    height: 80,
-    zIndex: 2,
-    content: "Add your summary or bio here.",
-    fontId: DEFAULT_FONT_ID,
-    fontSize: 14,
-    color: "#374151",
-    fontWeight: "normal",
-    align: "left",
-    lineHeight: 1.5,
-  },
-];
-
 interface Canvas3DState {
   elements: Canvas3DElement[];
   selectedId: string | null;
   viewMode: ViewMode;
   hydrated: boolean;
   paperScreen: PaperScreenQuad | null;
+  activeTemplateId: string | null;
   setViewMode: (mode: ViewMode) => void;
   setSelectedId: (id: string | null) => void;
   clearSelection: () => void;
   loadElements: (elements: Canvas3DElement[]) => void;
   addImage: (shape?: ImageShape) => void;
+  addShape: () => void;
   addText: (variant: TextVariant) => void;
   updateElement: (id: string, patch: Partial<Canvas3DElement>) => void;
   removeElement: (id: string) => void;
   duplicateElement: (id: string) => void;
   bringForward: (id: string) => void;
   setPaperScreen: (quad: PaperScreenQuad | null) => void;
+  applyTemplate: (templateId: string) => boolean;
   hydrateFromStorage: () => void;
   persistToStorage: () => void;
 }
@@ -139,6 +108,49 @@ function defaultTextForVariant(variant: TextVariant): Partial<Canvas3DTextElemen
         listItems: ["Bullet one", "Bullet two"],
         lineHeight: 1.5,
       };
+    case "sectionTitle":
+      return {
+        ...base,
+        content: "Section",
+        fontSize: 16,
+        width: 280,
+        height: 28,
+        fontWeight: "bold",
+        color: "#1e2a4a",
+        lineHeight: 1.2,
+      };
+    case "subtitle":
+      return {
+        ...base,
+        content: "SUBTITLE",
+        fontSize: 12,
+        width: 320,
+        height: 24,
+        color: "#6b7280",
+        lineHeight: 1.2,
+      };
+    case "labelValue":
+      return {
+        ...base,
+        label: "Label",
+        content: "Value",
+        fontSize: 12,
+        width: 200,
+        height: 36,
+        lineHeight: 1.3,
+      };
+    case "link":
+      return {
+        ...base,
+        content: "Link text",
+        href: "https://example.com",
+        fontSize: 12,
+        width: 160,
+        height: 22,
+        color: "#1e2a4a",
+        fontWeight: "bold",
+        lineHeight: 1.2,
+      };
     default:
       return {
         ...base,
@@ -157,6 +169,7 @@ export const useCanvas3DStore = create<Canvas3DState>((set, get) => ({
   viewMode: "edit",
   hydrated: false,
   paperScreen: null,
+  activeTemplateId: null,
 
   setViewMode: (mode) => set({ viewMode: mode }),
 
@@ -180,6 +193,23 @@ export const useCanvas3DStore = create<Canvas3DState>((set, get) => ({
       shape,
       borderRadius: shape === "rounded" ? 16 : 0,
       objectFit: "cover",
+      opacity: 1,
+    };
+    set({ elements: [...elements, el], selectedId: el.id });
+  },
+
+  addShape: () => {
+    const { elements } = get();
+    const el: Canvas3DShapeElement = {
+      id: nextId(),
+      type: "shape",
+      x: 48,
+      y: 48,
+      width: 200,
+      height: 120,
+      zIndex: maxZIndex(elements) + 1,
+      fillColor: "#e5e7eb",
+      borderRadius: 0,
       opacity: 1,
     };
     set({ elements: [...elements, el], selectedId: el.id });
@@ -240,6 +270,17 @@ export const useCanvas3DStore = create<Canvas3DState>((set, get) => ({
 
   setPaperScreen: (quad) => set({ paperScreen: quad }),
 
+  applyTemplate: (templateId) => {
+    const elements = getTemplateElements(templateId);
+    if (!elements) return false;
+    set({
+      elements,
+      activeTemplateId: templateId,
+      selectedId: null,
+    });
+    return true;
+  },
+
   hydrateFromStorage: () => {
     if (typeof window === "undefined") return;
     try {
@@ -248,11 +289,13 @@ export const useCanvas3DStore = create<Canvas3DState>((set, get) => ({
         const parsed = JSON.parse(raw) as {
           elements?: Canvas3DElement[];
           viewMode?: ViewMode;
+          activeTemplateId?: string | null;
         };
         if (parsed.elements?.length) {
           set({
             elements: parsed.elements,
             viewMode: parsed.viewMode ?? "edit",
+            activeTemplateId: parsed.activeTemplateId ?? null,
             hydrated: true,
           });
           return;
@@ -266,10 +309,10 @@ export const useCanvas3DStore = create<Canvas3DState>((set, get) => ({
 
   persistToStorage: () => {
     if (typeof window === "undefined") return;
-    const { elements, viewMode } = get();
+    const { elements, viewMode, activeTemplateId } = get();
     localStorage.setItem(
       CANVAS3D_STORAGE_KEY,
-      JSON.stringify({ elements, viewMode })
+      JSON.stringify({ elements, viewMode, activeTemplateId })
     );
   },
 }));

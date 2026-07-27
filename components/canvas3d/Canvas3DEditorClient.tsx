@@ -27,6 +27,7 @@ export default function Canvas3DEditorClient() {
   const hydrateFromStorage = useCanvas3DStore((s) => s.hydrateFromStorage);
   const persistToStorage = useCanvas3DStore((s) => s.persistToStorage);
   const elements = useCanvas3DStore((s) => s.elements);
+  const activeTemplateId = useCanvas3DStore((s) => s.activeTemplateId);
   const exportRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -35,7 +36,7 @@ export default function Canvas3DEditorClient() {
 
   useEffect(() => {
     persistToStorage();
-  }, [elements, viewMode, persistToStorage]);
+  }, [elements, viewMode, activeTemplateId, persistToStorage]);
 
   const handleExportPng = async () => {
     const root = exportRef.current;

@@ -5,6 +5,7 @@ import { CANVAS_FONTS } from "@/lib/canvas3d/fonts";
 import { useCanvas3DStore } from "@/lib/canvas3d/useCanvas3DStore";
 import {
   isImageElement,
+  isShapeElement,
   isTextElement,
   type ImageShape,
   type TextAlign,
@@ -43,6 +44,43 @@ export function ElementInspector() {
       >
         Bring to front
       </button>
+
+      {isShapeElement(selected) && (
+        <>
+          <label className="text-xs font-medium text-gray-600">Fill color</label>
+          <input
+            type="color"
+            value={selected.fillColor}
+            onChange={(e) =>
+              updateElement(selected.id, { fillColor: e.target.value })
+            }
+          />
+          <label className="text-xs font-medium text-gray-600">
+            Corner radius
+          </label>
+          <input
+            type="number"
+            className="border border-gray-300 rounded px-2 py-1.5 text-sm"
+            value={selected.borderRadius ?? 0}
+            onChange={(e) =>
+              updateElement(selected.id, {
+                borderRadius: Number(e.target.value),
+              })
+            }
+          />
+          <label className="text-xs font-medium text-gray-600">Opacity</label>
+          <input
+            type="range"
+            min={0}
+            max={1}
+            step={0.05}
+            value={selected.opacity ?? 1}
+            onChange={(e) =>
+              updateElement(selected.id, { opacity: Number(e.target.value) })
+            }
+          />
+        </>
+      )}
 
       {isImageElement(selected) && (
         <>
@@ -121,6 +159,10 @@ export function ElementInspector() {
           >
             <option value="simple">Simple</option>
             <option value="header">Header</option>
+            <option value="sectionTitle">Section title</option>
+            <option value="subtitle">Subtitle</option>
+            <option value="labelValue">Label + value</option>
+            <option value="link">Link</option>
             <option value="withIcon">With icon</option>
             <option value="withImage">With image</option>
             <option value="numbered">Numbered list</option>
@@ -142,6 +184,9 @@ export function ElementInspector() {
           </select>
           {(selected.variant === "simple" ||
             selected.variant === "header" ||
+            selected.variant === "sectionTitle" ||
+            selected.variant === "subtitle" ||
+            selected.variant === "link" ||
             selected.variant === "withIcon" ||
             selected.variant === "withImage") && (
             <>
@@ -152,6 +197,39 @@ export function ElementInspector() {
                 onChange={(e) =>
                   updateElement(selected.id, { content: e.target.value })
                 }
+              />
+            </>
+          )}
+          {selected.variant === "labelValue" && (
+            <>
+              <label className="text-xs font-medium text-gray-600">Label</label>
+              <input
+                className="border border-gray-300 rounded px-2 py-1.5 text-sm"
+                value={selected.label ?? ""}
+                onChange={(e) =>
+                  updateElement(selected.id, { label: e.target.value })
+                }
+              />
+              <label className="text-xs font-medium text-gray-600">Value</label>
+              <textarea
+                className="border border-gray-300 rounded px-2 py-1.5 text-sm min-h-[56px]"
+                value={selected.content}
+                onChange={(e) =>
+                  updateElement(selected.id, { content: e.target.value })
+                }
+              />
+            </>
+          )}
+          {selected.variant === "link" && (
+            <>
+              <label className="text-xs font-medium text-gray-600">URL</label>
+              <input
+                className="border border-gray-300 rounded px-2 py-1.5 text-sm"
+                value={selected.href ?? ""}
+                onChange={(e) =>
+                  updateElement(selected.id, { href: e.target.value })
+                }
+                placeholder="https://"
               />
             </>
           )}
