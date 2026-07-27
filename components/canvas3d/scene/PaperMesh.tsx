@@ -11,6 +11,7 @@ import {
 } from "@/lib/canvas3d/constants";
 import { PaperSurface } from "../paper/PaperSurface";
 
+/** Maps A4 pixel layout to paper width in world units: scale = PAPER_WORLD_WIDTH / CANVAS_WIDTH_PX */
 const HTML_SCALE = PAPER_WORLD_WIDTH / CANVAS_WIDTH_PX;
 
 const PAPER_TILT_X = -0.08;
@@ -20,25 +21,23 @@ export function PaperMesh() {
 
   return (
     <group ref={groupRef} rotation={[PAPER_TILT_X, 0, 0]}>
-      <mesh castShadow receiveShadow position={[0, 0, -0.002]}>
-        <boxGeometry args={[PAPER_WORLD_WIDTH, PAPER_WORLD_HEIGHT, 0.012]} />
-        <meshStandardMaterial color="#fafafa" roughness={0.85} metalness={0} />
-      </mesh>
-      <mesh position={[0, 0, 0.007]}>
-        <planeGeometry args={[PAPER_WORLD_WIDTH * 0.998, PAPER_WORLD_HEIGHT * 0.998]} />
-        <meshBasicMaterial color="#ffffff" />
+      <mesh castShadow receiveShadow position={[0, 0, 0]}>
+        <boxGeometry args={[PAPER_WORLD_WIDTH, PAPER_WORLD_HEIGHT, 0.014]} />
+        <meshStandardMaterial color="#ffffff" roughness={0.88} metalness={0} />
       </mesh>
       <Html
         transform
         occlude={false}
+        center
         scale={HTML_SCALE}
-        position={[0, 0, 0.008]}
+        distanceFactor={1}
+        zIndexRange={[100, 0]}
+        position={[0, 0, 0.015]}
         style={{
           width: CANVAS_WIDTH_PX,
           height: CANVAS_HEIGHT_PX,
           pointerEvents: "auto",
         }}
-        center={false}
       >
         <PaperSurface />
       </Html>

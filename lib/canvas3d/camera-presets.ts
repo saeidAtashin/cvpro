@@ -9,7 +9,7 @@ export interface CameraPreset {
 /** Static camera positions keyed by editor view mode */
 export const CAMERA_PRESETS: Record<ViewMode, CameraPreset> = {
   edit: {
-    position: [0, 0.8, 2.2],
+    position: [0, 0.75, 2.4],
     fov: 45,
     target: [0, 0, 0],
   },
