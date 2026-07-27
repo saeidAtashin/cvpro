@@ -53,12 +53,19 @@ const PDF_TEMPLATE_LANDING: LegacyTemplateCatalogEntry[] = [
   LEGACY_TEMPLATE_CATALOG[0],
 ];
 
-const LEGACY_WITHOUT_PDF_LANDING = LEGACY_TEMPLATE_CATALOG.slice(1);
+const threeDCanvasEntry = LEGACY_TEMPLATE_CATALOG.find(
+  (t) => t.id === "3d-canvas-cv"
+)!;
+
+const LEGACY_AFTER_GENERATED = LEGACY_TEMPLATE_CATALOG.filter(
+  (t) => t.id !== "modern-minimalist-professional" && t.id !== "3d-canvas-cv"
+);
 
 export const TEMPLATE_CATALOG: TemplateCatalogEntry[] = [
   ...PDF_TEMPLATE_LANDING,
+  threeDCanvasEntry,
   ...GENERATED_TEMPLATE_CATALOG,
-  ...LEGACY_WITHOUT_PDF_LANDING,
+  ...LEGACY_AFTER_GENERATED,
 ];
 
 export function getTemplateById(id: string): TemplateCatalogEntry | undefined {

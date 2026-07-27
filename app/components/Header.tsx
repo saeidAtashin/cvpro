@@ -8,6 +8,7 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const menuItems = [
+    { href: "/3d-canvas-editor", label: "3D Canvas Studio" },
     { href: "#", label: "How it works?" },
     { href: "#", label: "FAQ" },
     { href: "#", label: "Articles" },
